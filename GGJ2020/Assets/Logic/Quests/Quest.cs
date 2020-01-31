@@ -9,6 +9,11 @@ namespace Logic
 
         public float Difficulty;
 
+        public Quest(float difficulty)
+        {
+            Difficulty = difficulty;
+        }
+
         public abstract QuestResult GetResult(Party party);
 
     }
