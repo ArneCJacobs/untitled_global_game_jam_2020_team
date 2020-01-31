@@ -4,8 +4,8 @@ namespace Logic
 {
     public class Slot
     {
-        private List<PartType> AcceptedTypes { get; set; }
-        private PartType Preferred { get; set; } 
+        public List<PartType> AcceptedTypes { get; set; }
+        public PartType Preferred { get; set; } 
         public Part AssignedPart { get; set; }
 
         public Slot()
