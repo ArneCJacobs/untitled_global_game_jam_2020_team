@@ -8,7 +8,7 @@ namespace Game.GUI
 {
     public class GuiBaseElement
     {
-        public Rectangle Rect { get; set; }
+        public Rectangle Rect { get; set; } = new Rectangle(0, 0, 1, 1);
         public virtual void Update() { }
         public virtual void Initialize() { }
         public virtual void Destroy() { }
