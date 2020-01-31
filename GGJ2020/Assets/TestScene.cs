@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Logic;
+using Logic.Quests;
 using UnityEngine;
 
 public class TestScene : MonoBehaviour
@@ -16,8 +17,10 @@ public class TestScene : MonoBehaviour
 
         var testParty = new Party();
         testParty.Bodies.Add(testBody);
+        var qg = new QuestGenerator();
 
-        Quest test = new BasicQuest();
+        var test = qg.GenerateQuest(10);
+        Debug.Log(test.Description);
         var result = test.GetResult(testParty);
         Debug.Log(result.Gold.ToString());
     }
