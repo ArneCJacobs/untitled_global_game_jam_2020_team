@@ -7,7 +7,7 @@ namespace Game.GUI
 {
     public class UnityGuiImage : MonoBehaviour
     {
-        GuiImage m_img = new GuiImage();
+        GuiBaseElement m_img = new GuiBaseElement();
         Image Image { get; set; }
 
         public int Width;
