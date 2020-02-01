@@ -37,9 +37,9 @@ public class BodyPartVisual : MonoBehaviour
         spriteRenderer.transform.rotation = Quaternion.Euler(Vector3.forward);
 
         var partDetails = GuiHelpers.GetPartTypeDetails(AssignedPart.Type);
-        var sprite = Resources.Load<Sprite>(partDetails.AssetName);
+        var sprite = Resources.Load<Sprite>(AttachedToBody ? partDetails.AssetName : partDetails.BeltAssetName);
         spriteRenderer.sprite = sprite;
-        var size = spriteRenderer.sprite.bounds.size;
+        //var size = spriteRenderer.sprite.bounds.size;
         Vector3 parentScale = Vector3.one;
         //if (gameObject.transform.parent)
         //    parentScale = gameObject.transform.parent.localScale;
@@ -51,7 +51,7 @@ public class BodyPartVisual : MonoBehaviour
         //if (AttachedToBody)
         //    spriteRenderer.transform.localPosition += partDetails.Offset;
 
-        spriteRenderer.transform.rotation = !AttachedToBody ? Quaternion.Euler(Vector3.forward * partDetails.RotationEuler) : Quaternion.Euler(Vector3.forward);
+       // spriteRenderer.transform.rotation = !AttachedToBody ? Quaternion.Euler(Vector3.forward * partDetails.RotationEuler) : Quaternion.Euler(Vector3.forward);
 
 
         Destroy(GetComponent<PolygonCollider2D>());
