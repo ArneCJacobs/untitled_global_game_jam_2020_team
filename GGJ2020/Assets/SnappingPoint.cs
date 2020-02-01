@@ -31,13 +31,19 @@ public class SnappingPoint : MonoBehaviour
         if (bodypartVisualComp == null)
             return false;
 
-        AssignedPart = part;
+
         return AssignedPart == null && (IsTypeRestricted ? AcceptedTypes.Contains(bodypartVisualComp.AssignedPart.Type) : true);
     }
 
+    public void AssignGameObject(GameObject part)
+    {
+        AssignedPart = part;
+    }
 
     public void UnSnap(bool destroy = false)
     {
+        Debug.Log($"destroy --- {AssignedPart}");
+
         if (destroy && AssignedPart != null)
         {
             GameObject.Destroy(AssignedPart);

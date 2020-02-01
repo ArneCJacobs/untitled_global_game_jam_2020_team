@@ -45,16 +45,10 @@ public class BeltManager : MonoBehaviour
             var part = PartGenerator.GeneratePart();
             var partDetails = GuiHelpers.GetPartTypeDetails(part.Type);
             var gameobj = GameObject.Instantiate(BeltSnapObject) as GameObject;
-           // gameobj.GetComponent<BodyPartVisual>().AssignPart(part);
             gameobj.GetComponent<Transform>().position -= new Vector3(BeltLength, YOffset, 0);
             gameobj.GetComponent<Transform>().position += new Vector3(i * m_maxDist, 0,0);
             m_partsList.Add(part);
             beltContentsList.Add(gameobj);
-        }
-
-        for (int i = 0; i < 50; i++)
-        {
-            m_partsQueue.Add(PartGenerator.GeneratePart());
         }
     }
 
@@ -116,49 +110,11 @@ public class BeltManager : MonoBehaviour
 
     private void MoveNext()
     {
-        //for (int i = 0; i < beltContentsList.Count; i++)
-        //{
-        //    if (i < m_partsList.Count && i >= 0)
-        //    {
-        //        //var gameobj = beltContentsList[i].GetComponent<BodyPartVisual>();
-        //        //gameobj.AssignPart(m_partsList[i]);
-
-        //    }
-        //}
-
-        //var gameobj = beltContentsList[i].GetComponent<BodyPartVisual>();
         var lastItem = beltContentsList.OrderByDescending(o => o.GetComponent<Transform>().position.x).FirstOrDefault();
         if (lastItem == null)
             return;
 
         var snapComp = lastItem.GetComponent<SnappingPoint>();
-        if (snapComp.SnappedObject != null)
-            GameObject.Destroy(snapComp.SnappedObject);
-
-
-        // GameObject.Destroy(beltContentsList.Last());
+        snapComp.UnSnap(true);
     }
-
-    private void RemoveLastItem()
-    {
-
-    }
-
-    private void SwitchTexture(Part part,GameObject obj)
-    {
-
-        var spriteRenderer = obj.GetComponent<SpriteRenderer>();
-        spriteRenderer.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
-        spriteRenderer.transform.rotation = Quaternion.Euler(Vector3.forward);
-
-
-        var partDetails = GuiHelpers.GetPartTypeDetails(part.Type);
-        var sprite = Resources.Load<Sprite>(partDetails.AssetName);
-        spriteRenderer.sprite = sprite;
-        var size = spriteRenderer.sprite.bounds.size;
-        spriteRenderer.transform.localScale = new Vector3(partDetails.SizeModifier, partDetails.SizeModifier, 1.0f);
-        spriteRenderer.transform.rotation = Quaternion.Euler(Vector3.forward * partDetails.RotationEuler);
-
-    }
-
 }
