@@ -8,7 +8,8 @@ public class SnappingPoint : MonoBehaviour
     public bool IsTypeRestricted = false;
     public List<PartType> AcceptedTypes; 
     public PartType Preferred { get; set; }
-    public GameObject AssignedPart; 
+    public GameObject AssignedPart;
+    public bool IsBody = false;
     
     // Start is called before the first frame update
     void Start()

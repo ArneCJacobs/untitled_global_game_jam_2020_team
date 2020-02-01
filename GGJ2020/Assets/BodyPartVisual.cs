@@ -7,6 +7,7 @@ using UnityEngine;
 public class BodyPartVisual : MonoBehaviour
 {
     public Part AssignedPart = null;
+    public bool AttachedToBody = true;
     // Start is called before the first frame update
     void Start()
     {
@@ -16,32 +17,41 @@ public class BodyPartVisual : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        var dragComp = GetComponent<ClickDragTest>();
     }
 
     public void AssignPart(Part part)
     {
         AssignedPart = part;
-        SwitchTexture(AssignedPart);
+        SwitchTexture();
     }
 
-    private void SwitchTexture(Part part)
+    private void SwitchTexture()
     {
-
         var spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
         spriteRenderer.transform.rotation = Quaternion.Euler(Vector3.forward);
 
-
-        var partDetails = GuiHelpers.GetPartTypeDetails(part.Type);
+        var partDetails = GuiHelpers.GetPartTypeDetails(AssignedPart.Type);
         var sprite = Resources.Load<Sprite>(partDetails.AssetName);
         spriteRenderer.sprite = sprite;
         var size = spriteRenderer.sprite.bounds.size;
-        spriteRenderer.transform.localScale = new Vector3(partDetails.SizeModifier, partDetails.SizeModifier, 1.0f);
-        spriteRenderer.transform.rotation = Quaternion.Euler(Vector3.forward * partDetails.RotationEuler);
+        if (gameObject.transform.parent != null && AttachedToBody)
+            spriteRenderer.transform.localScale = gameObject.transform.parent.localScale;
+        else
+            spriteRenderer.transform.localScale = new Vector3(!AttachedToBody ? partDetails.SizeModifier : 1.0f, !AttachedToBody ? partDetails.SizeModifier : 1.0f, 1.0f);
+        spriteRenderer.transform.rotation = !AttachedToBody ? Quaternion.Euler(Vector3.forward * partDetails.RotationEuler) : Quaternion.Euler(Vector3.forward);
+
 
         Destroy(GetComponent<PolygonCollider2D>());
         gameObject.AddComponent<PolygonCollider2D>();
+        
+    }
 
+    public void ResetRotationsAndTranslations(bool isBody)
+    {
+        AttachedToBody = isBody;
+        Debug.Log($"AttachedToBody {isBody}");
+        SwitchTexture();
     }
 }
