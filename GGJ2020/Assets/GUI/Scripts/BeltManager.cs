@@ -13,7 +13,6 @@ public class BeltManager : MonoBehaviour
     public float MaxScrollSpeed = 1.0f;
     public float CurrentMoveTime = 5.0f;
     public float MaxMoveTime = 5.0f;
-    public float ObjectXOffset = 1f;
     public float BeltLength = 50.0f;
     public float Imagesize = 50.0f;
     public int ItemAmount = 5;
@@ -23,7 +22,7 @@ public class BeltManager : MonoBehaviour
     float m_currentDist = 0.0f;
     float m_maxDist = 1.0f;
 
-    public List<BeltObject> beltContentsList = new List<BeltObject>();
+    public List<GameObject> beltContentsList = new List<GameObject>();
 
     public struct BeltObject
     {
@@ -40,23 +39,19 @@ public class BeltManager : MonoBehaviour
         m_maxDist = (BeltLength * 2) / ItemAmount;
         for (int i = 0; i < ItemAmount; i++)
         {
-
-            var gameobj = GameObject.Instantiate(Resources.Load("Prefabs/Zombie_Head_01")) as GameObject;
-            gameobj.GetComponent<Transform>().position -= new Vector3(BeltLength, ObjectXOffset, 0);
-            gameobj.GetComponent<Transform>().position += new Vector3(i * m_maxDist, 0,0);
             var part = PartGenerator.GeneratePart();
+            var partDetails = GuiHelpers.GetPartTypeDetails(part.Type);
+            var gameobj = GameObject.Instantiate(Resources.Load("Prefabs/BodyPart")) as GameObject;
+            gameobj.GetComponent<BodyPartVisual>().AssignPart(part);
+            gameobj.GetComponent<Transform>().position -= new Vector3(BeltLength, partDetails.YOffset, 0);
+            gameobj.GetComponent<Transform>().position += new Vector3(i * m_maxDist, 0,0);
             m_partsList.Add(part);
-            beltContentsList.Add(new BeltObject() { obj = gameobj, part = part });
+            beltContentsList.Add(gameobj);
         }
 
-        foreach (var ob in beltContentsList)
+        for (int i = 0; i < 50; i++)
         {
-            SwitchTexture(ob.part, ob.obj);
-        }
-
-        for (int i = 0; i < ItemAmount; i++)
-        {
-            m_partsList.Add(PartGenerator.GeneratePart());
+            m_partsQueue.Add(PartGenerator.GeneratePart());
         }
     }
 
@@ -88,19 +83,22 @@ public class BeltManager : MonoBehaviour
 
     void i_moveItemsOnBelt()
     {
-        List<Transform> baseElementList = new List<Transform>();
-        foreach (var item in beltContentsList)
-            baseElementList.Add(item.obj.GetComponent<Transform>());
-
         var moveAmount = 0.01f * ScrollSpeed;
 
         i_trackMovement(moveAmount);
 
-        foreach (var item in baseElementList)
+        foreach (var item in beltContentsList)
         {
-            item.position += new Vector3(moveAmount, 0, 0);
-            if (item.position.x > BeltLength)
-                item.position -= new Vector3(BeltLength * 2, 0, 0);
+            //var partDetails = GuiHelpers.GetPartTypeDetails(item);
+            var bp = item.GetComponent<BodyPartVisual>();
+            var tf = item.GetComponent<Transform>();
+            var partDetails = GuiHelpers.GetPartTypeDetails(bp.AssignedPart.Type);
+
+            tf.position += new Vector3(moveAmount, 0, 0);
+            if (tf.position.x > BeltLength)
+                tf.position -= new Vector3(BeltLength * 2, 0);
+
+            tf.position = new Vector3(tf.position.x, partDetails.YOffset);
         }
 
     }
@@ -118,24 +116,12 @@ public class BeltManager : MonoBehaviour
 
     private void MoveNext()
     {
-        if (m_partsList.Count > 0)
-        {
-            var lastitem = m_partsList.Last();
-            m_partsList.Remove(lastitem);
-        }
-
-        if (m_partsQueue.Count > 0)
-        {
-            m_partsList.Reverse();
-            m_partsList.Add(m_partsQueue.First());
-            m_partsList.Reverse();
-        }
-
         for (int i = 0; i < beltContentsList.Count; i++)
         {
             if (i < m_partsList.Count && i >= 0)
             {
-                SwitchTexture(m_partsList[i], beltContentsList[i].obj);
+                var gameobj = beltContentsList[i].GetComponent<BodyPartVisual>();
+                gameobj.AssignPart(m_partsList[i]);
             }
         }
     }
