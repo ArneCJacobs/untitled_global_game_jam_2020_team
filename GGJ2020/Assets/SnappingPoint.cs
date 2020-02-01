@@ -11,10 +11,10 @@ public class SnappingPoint : MonoBehaviour
         tag = "snap";
 
     }
-    
-    public List<PartType> AcceptedTypes { get; set; }
-    public PartType Preferred { get; set; } 
-    public Part AssignedPart { get; set; }
+
+    public List<PartType> AcceptedTypes; 
+    public PartType Preferred { get; set; }
+    public Part AssignedPart; 
 
     public SnappingPoint()
     {
@@ -23,8 +23,9 @@ public class SnappingPoint : MonoBehaviour
     }
 
 
-    public CanSnap()
+    public bool CanSnap(Part part)
     {
+        return AssignedPart == null && AcceptedTypes.Contains(part.Type);
     }
 
     // Update is called once per frame
