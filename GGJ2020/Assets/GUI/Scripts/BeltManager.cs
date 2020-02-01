@@ -18,178 +18,116 @@ public class BeltManager : MonoBehaviour
     public float YOffset = 0.0f;
     public int ItemAmount = 5;
 
-    int counter = 0;
+    float m_frameTimer = 0.0f;
+    float m_maxFrameTimer = 0.05f;
+    public int MaxFramesPerBeltSection = 20;
+    public bool BodiesOnly= true;
 
-    float m_currentDist = 0.0f;
-    float m_maxDist = 1.0f;
+    private int m_currentFrameCounter = 0;
+
 
     public GameObject BeltSnapObject;
-    
-    public struct BeltObject
-    {
-        public GameObject obj;
-        public Part part;
-    }
+    public GameObject BeltSnapObjectAddition;
 
-    QueueManager queueman;
+    public List<(GameObject obj, int index)> BeltSlots = new List<(GameObject obj, int index)>();
+    int m_beltSlotCount = 1;
+    List<Part> QueuedPartList = new List<Part>();
+
+    List<Part> PartList = new List<Part>();
+
+
 
     // Start is called before the first frame update
     void Start()
     {
-        m_maxDist = (BeltLength * 2) / ItemAmount;
-        queueman = new QueueManager(ItemAmount);
 
+
+        m_beltSlotCount = ItemAmount;
         for (int i = 0; i < ItemAmount; i++)
         {
-            queueman.BeltSlots[i] = GameObject.Instantiate(BeltSnapObject);
-            queueman.BeltSlots[i].transform.parent = gameObject.transform;
-            //queueman.BeltSlots[i].GetComponent<Transform>().position += new Vector3(, YOffset, 0);
-            queueman.BeltSlots[i].GetComponent<Transform>().position += new Vector3((i * m_maxDist) - BeltLength, 0, 0);
+            BeltSlots.Add((GameObject.Instantiate(BeltSnapObject), i));
         }
-
-        for (int i =0; i < 20; i++)
-        {
-            queueman.AddItemToQueue(PartGenerator.GeneratePart());
-        }
-
-        queueman.AdvanceQueue(ItemAmount);
     }
 
     // Update is called once per frame
     void Update()
     {
-        i_moveBelt();
-        if (MaxMoveTime > 0.0f)
-        {
-            ScrollSpeed = MaxScrollSpeed;
-            MaxMoveTime -= Time.deltaTime;
 
-            i_moveItemsOnBelt();
-        }
-        else
-            ScrollSpeed = 0;
-
-    }
-
-    private void i_moveBelt()
-    {
-        var scrollComps = GetComponentsInChildren<TextureScroll>();
-        var rotationComps = GetComponentsInChildren<Rotation>();
-        foreach (var scrollcomp in scrollComps)
-            scrollcomp.ScrollSpeed = ScrollSpeed;
-        foreach (var rotationComp in rotationComps)
-            rotationComp.RotationSpeed = ScrollSpeed * 160;
-    }
-
-    void i_moveItemsOnBelt()
-    {
-        var moveAmount = 0.01f * ScrollSpeed;
-
-        i_trackMovement(moveAmount);
-
-        foreach (var item in queueman.BeltSlots)
-        {
-            var tf = item.GetComponent<Transform>();
-
-            tf.position += new Vector3(moveAmount, 0, 0);
-            if (tf.position.x > BeltLength)
-                tf.position -= new Vector3(BeltLength * 2, 0);
-
-            tf.position = new Vector3(tf.position.x, YOffset);
-        }
-
-    }
-
-    private void i_trackMovement(float moveAmount)
-    {
-        if (m_currentDist < m_maxDist)
-            m_currentDist += moveAmount;
+        if (m_frameTimer > 0)
+            m_frameTimer -= Time.deltaTime;
         else
         {
-            m_currentDist = 0.0f;
-            MoveNext();
+            m_frameTimer = m_maxFrameTimer;
+            AdvanceFrame();
         }
     }
 
-    private void MoveNext()
+    public void AdvanceFrame()
     {
-        queueman.AdvanceQueue();
+        for (int i = 0; i < ItemAmount; i++)
+        {
+            var item = BeltSlots[i];
+            var perc = (float)m_currentFrameCounter / (float)MaxFramesPerBeltSection;
+            var sectionLength = BeltLength / ItemAmount;
+            var lerpVal = UnityEngine.Mathf.Lerp((item.index * sectionLength) - (BeltLength / 2), (item.index + 1) * sectionLength - (BeltLength / 2), perc);
+            item.obj.transform.position = new Vector3(lerpVal, 0.0f, 0.0f);
+            var ob = BeltSlots.Select(o => o.obj).FirstOrDefault();
+            if (ob != null)
+                Debug.Log(ob.transform.position);
+        }
+
+
+        
+        i_advanceFrameTimer();
     }
-      
-    public class QueueManager
+
+    private void i_advanceFrameTimer()
     {
-        public GameObject[] BeltSlots;
-        List<Part> QueuedPartList = new List<Part>();
-
-        List<Part> PartList = new List<Part>();
-
-        int m_counter = 0;
-
-        public QueueManager(int beltSlotCount)
+        if (m_currentFrameCounter > MaxFramesPerBeltSection)
         {
-            BeltSlots = new GameObject[beltSlotCount];
+            for (int i = 0; i < BeltSlots.Count; i++)
+                BeltSlots[i] = (BeltSlots[i].obj, BeltSlots[i].index + 1);
+
+            RemoveItemFromQueue();
+            AddItemToQueue(PartGenerator.GeneratePart());
+            m_currentFrameCounter = 0;
         }
+        else
+            m_currentFrameCounter++;
+    }
 
-        public void AdvanceQueue(int steps = 1)
-        {
-            for (int i = 0; i < steps; i++)
-            {
-                var furthest = BeltSlots[m_counter];
-                var snapComp = furthest.GetComponent<SnappingPoint>();
-                //if (snapComp.AssignedPart == null)
-                //    GameObject.Destroy(snapComp.AssignedPart);
 
-                if (snapComp.AssignedPart == null)
-                    AddItemToQueue(m_counter);
+    public void AddItemToQueue(Part part)
+    {
+        var obj = Resources.Load("Prefabs/BodyPart") as GameObject;
+        var instObj = GameObject.Instantiate(obj);
 
-                i_advanceCounter();
-            }
-        }
+        var beltObj = GameObject.Instantiate(BeltSnapObject);
+        BeltSlots.Add((beltObj, 0));
 
-        public GameObject GetItemInSlot(int id)
-        {
-            if (id >= 0 && id < BeltSlots.Length)
-            {
-                var snapComp = BeltSlots[id].GetComponent<SnappingPoint>();
-                return snapComp.AssignedPart;
-            }
-            return null;
-        }
+        var snapComp = beltObj.GetComponent<SnappingPoint>();
 
-        public void AddItemToQueue(int id)
-        {
-            var nextItem = QueuedPartList.FirstOrDefault();
-            if (nextItem == null)
-                return;
-            else
-            {
-                var obj = Resources.Load("Prefabs/BodyPart") as GameObject;
-                var beltSlot = BeltSlots[id];
-                var snapComp = BeltSlots[id].GetComponent<SnappingPoint>();
+        var comp = instObj.GetComponent<ClickDragTest>();
+        comp.snappedTo = beltObj;
+        comp.startSnappedTo = beltObj;
+        var bodVs = instObj.GetComponent<BodyPartVisual>();
+        snapComp.AssignGameObject(instObj);
 
-                var comp = obj.GetComponent<ClickDragTest>();
-                comp.snappedTo = beltSlot;
-                comp.startSnappedTo = beltSlot;
-                var bodVs = obj.GetComponent<BodyPartVisual>();
-                GameObject.Instantiate(obj);
-                snapComp.AssignGameObject(obj);
+        bodVs.ResetRotationsAndTranslations(false, beltObj.transform);
 
-                bodVs.ResetRotationsAndTranslations(false, beltSlot.transform);
-            }
-            QueuedPartList.Remove(nextItem);
-        }
+    }
 
-        public void AddItemToQueue(Part part)
-        {
-            QueuedPartList.Add(part);
-        }
+    public void RemoveItemFromQueue()
+    {
+        Debug.Log("removed item");
 
-        private void i_advanceCounter()
-        {
-            if (m_counter + 1 >= BeltSlots.Length)
-                m_counter = 0;
-            else
-                m_counter++;
-        }
+        var toRemoveItem = BeltSlots.FirstOrDefault(x => x.index == m_beltSlotCount);
+
+        var snapComp = toRemoveItem.obj.GetComponent<SnappingPoint>();
+        var attachedObj = snapComp.AssignedPart;
+
+        BeltSlots.Remove(toRemoveItem);
+        Destroy(attachedObj);
+        Destroy(toRemoveItem.obj);
     }
 }
