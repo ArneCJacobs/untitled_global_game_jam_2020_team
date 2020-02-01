@@ -16,6 +16,11 @@ public class LootRewardBox : MonoBehaviour
 
     public void Display(List<Part> loot)
     {
+        foreach (Transform child in transform)
+        {
+            Destroy(child.gameObject);
+            
+        }
         this.parts = loot;
         foreach (var part in parts)
         {
