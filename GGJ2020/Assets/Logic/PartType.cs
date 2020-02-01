@@ -2,6 +2,6 @@ namespace Logic
 {
     public enum PartType
     {
-        HEAD, LEFTLEG, RIGHTLEG, LEFTARM, RIGHTARM
+        TORSO, HEAD, LEFTLEG, RIGHTLEG, LEFTARM, RIGHTARM
     }
 }

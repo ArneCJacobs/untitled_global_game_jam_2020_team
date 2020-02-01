@@ -27,7 +27,8 @@ public class ClickDragTest : MonoBehaviour
         transform.position = cursorPosition;
         
         var snaps = GameObject.FindObjectsOfType<SnappingPoint>().ToArray();
-        var rslt = GetDistanceToClosestSnappingPoint(snaps);
+        var snapsInChildren = GetComponentsInChildren<SnappingPoint>();
+        var rslt = GetDistanceToClosestSnappingPoint(snaps.Where(o => !snapsInChildren.Contains(o)).ToArray());
         if (rslt.distance < snappingDistance)
         {
             Debug.DrawLine(transform.position, rslt.target.transform.position, Color.green, 0, false);
@@ -48,18 +49,25 @@ public class ClickDragTest : MonoBehaviour
         SnappingPoint[] snaps = GameObject.FindObjectsOfType<SnappingPoint>();
         var rslt = GetDistanceToClosestSnappingPoint(snaps);
         if (rslt.distance< snappingDistance)
-        {
-
-            
+        {           
             transform.position= rslt.target.transform.position;
             snappedTo = rslt.target.gameObject;
+
             SnappingPoint snappingPoint = snappedTo.GetComponent<SnappingPoint>();
             if (snappingPoint != null)
+            {
                 snappingPoint.UnSnap();
 
-            snappingPoint.AssignGameObject(gameObject);
+                snappingPoint.AssignGameObject(gameObject);
 
-            this.transform.SetParent(snappedTo.transform);
+                var bodyPartComp = GetComponent<BodyPartVisual>();
+                if (bodyPartComp != null)
+                {
+                    bodyPartComp.ResetRotationsAndTranslations(snappingPoint.IsBody, snappedTo.transform);
+                }
+            }
+
+            //this.transform.SetParent(snappedTo.transform);
         }
         else
         {
@@ -70,7 +78,7 @@ public class ClickDragTest : MonoBehaviour
 
     private (SnappingPoint target, float distance) GetDistanceToClosestSnappingPoint(SnappingPoint[] enemies)
     {
-        PartComponent partComponent = GetComponent<PartComponent>();
+        BodyPartVisual partComponent = GetComponent<BodyPartVisual>();
         SnappingPoint bestTarget = null;
         float closestDistanceSqr = Mathf.Infinity;
         Vector3 currentPosition = transform.position;

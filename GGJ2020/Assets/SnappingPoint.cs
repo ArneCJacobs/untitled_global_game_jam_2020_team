@@ -8,19 +8,22 @@ public class SnappingPoint : MonoBehaviour
     public bool IsTypeRestricted = false;
     public List<PartType> AcceptedTypes; 
     public PartType Preferred { get; set; }
-    public GameObject AssignedPart; 
+    public GameObject AssignedPart;
+    public bool IsBody = false;
     
     // Start is called before the first frame update
     void Start()
     {
         tag = "snap";
-
+        //if (transform.parent != null)
+        //    transform.localScale = transform.parent.localScale;
     }
 
 
     public SnappingPoint()
     {
         AcceptedTypes = new List<PartType>();
+
         // Preferred = PartType.HEAD;
     }
 
@@ -31,8 +34,8 @@ public class SnappingPoint : MonoBehaviour
         if (bodypartVisualComp == null)
             return false;
 
-
-        return AssignedPart == null && (IsTypeRestricted ? AcceptedTypes.Contains(bodypartVisualComp.AssignedPart.Type) : true);
+        bool ContainsRestrictedType = IsTypeRestricted && AcceptedTypes.Contains(bodypartVisualComp.AssignedPart.Type);
+        return AssignedPart == null && (!IsTypeRestricted || ContainsRestrictedType);
     }
 
     public void AssignGameObject(GameObject part)
