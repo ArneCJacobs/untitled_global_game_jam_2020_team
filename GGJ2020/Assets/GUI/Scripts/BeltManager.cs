@@ -94,7 +94,7 @@ public class BeltManager : MonoBehaviour
             //sectionLength * m_dt;
 
             var lerpVal = UnityEngine.Mathf.Lerp((item.index * sectionLength) - (BeltLength / 2), (item.index + 1) * sectionLength - (BeltLength / 2), perc);
-            item.obj.transform.position = new Vector3(lerpVal, 0.0f, 0.0f);
+            item.obj.transform.position = new Vector3(lerpVal, YOffset, 0.0f);
             var ob = BeltSlots.Select(o => o.obj).FirstOrDefault();
             if (ob != null)
                 Debug.Log(ob.transform.position);
@@ -119,8 +119,7 @@ public class BeltManager : MonoBehaviour
 
     public void AddItemToQueue(Part part)
     {
-        var obj = Resources.Load("Prefabs/BodyPart") as GameObject;
-        var instObj = GameObject.Instantiate(obj);
+        var instObj = GameObject.Instantiate(BeltSnapObjectAddition);
 
         var beltObj = GameObject.Instantiate(BeltSnapObject);
         BeltSlots.Add((beltObj, 0));

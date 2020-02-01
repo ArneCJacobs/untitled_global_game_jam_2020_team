@@ -63,7 +63,7 @@ public class ClickDragTest : MonoBehaviour
             {
                 if (prevsnappingPoint != null)
                     prevsnappingPoint.UnSnap();
-
+                snappingPoint.UnSnap();
                 snappingPoint.AssignGameObject(gameObject);
 
                 var bodyPartComp = GetComponent<BodyPartVisual>();
