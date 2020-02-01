@@ -15,8 +15,8 @@ public class SnappingPoint : MonoBehaviour
     void Start()
     {
         tag = "snap";
-        if (transform.parent != null)
-            transform.localScale = transform.parent.localScale;
+        //if (transform.parent != null)
+        //    transform.localScale = transform.parent.localScale;
     }
 
 
@@ -34,8 +34,8 @@ public class SnappingPoint : MonoBehaviour
         if (bodypartVisualComp == null)
             return false;
 
-
-        return AssignedPart == null && (IsTypeRestricted ? AcceptedTypes.Contains(bodypartVisualComp.AssignedPart.Type) : true);
+        bool ContainsRestrictedType = IsTypeRestricted && AcceptedTypes.Contains(bodypartVisualComp.AssignedPart.Type);
+        return AssignedPart == null && (!IsTypeRestricted || ContainsRestrictedType);
     }
 
     public void AssignGameObject(GameObject part)

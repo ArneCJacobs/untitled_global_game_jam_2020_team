@@ -52,6 +52,7 @@ public class ClickDragTest : MonoBehaviour
         {           
             transform.position= rslt.target.transform.position;
             snappedTo = rslt.target.gameObject;
+
             SnappingPoint snappingPoint = snappedTo.GetComponent<SnappingPoint>();
             if (snappingPoint != null)
             {
@@ -61,10 +62,12 @@ public class ClickDragTest : MonoBehaviour
 
                 var bodyPartComp = GetComponent<BodyPartVisual>();
                 if (bodyPartComp != null)
-                    bodyPartComp.ResetRotationsAndTranslations(snappingPoint.IsBody);
+                {
+                    bodyPartComp.ResetRotationsAndTranslations(snappingPoint.IsBody, snappedTo.transform);
+                }
             }
 
-            this.transform.SetParent(snappedTo.transform);
+            //this.transform.SetParent(snappedTo.transform);
         }
         else
         {

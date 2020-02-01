@@ -30,7 +30,7 @@ public class BodyPartVisual : MonoBehaviour
         SwitchTexture();
     }
 
-    private void SwitchTexture()
+    private void SwitchTexture(Transform tf = null)
     {
         var spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
@@ -40,10 +40,17 @@ public class BodyPartVisual : MonoBehaviour
         var sprite = Resources.Load<Sprite>(partDetails.AssetName);
         spriteRenderer.sprite = sprite;
         var size = spriteRenderer.sprite.bounds.size;
-        if (gameObject.transform.parent != null && AttachedToBody)
-            spriteRenderer.transform.localScale = gameObject.transform.parent.localScale;
+        Vector3 parentScale = Vector3.one;
+        //if (gameObject.transform.parent)
+        //    parentScale = gameObject.transform.parent.localScale;
+        if (tf != null)
+            spriteRenderer.transform.localScale = new Vector3(partDetails.SizeModifier * tf.localScale.x, partDetails.SizeModifier * tf.localScale.y, 1.0f);
         else
-            spriteRenderer.transform.localScale = new Vector3(!AttachedToBody ? partDetails.SizeModifier : 1.0f, !AttachedToBody ? partDetails.SizeModifier : 1.0f, 1.0f);
+            spriteRenderer.transform.localScale = new Vector3(partDetails.SizeModifier, partDetails.SizeModifier, 1.0f);
+
+        //if (AttachedToBody)
+        //    spriteRenderer.transform.localPosition += partDetails.Offset;
+
         spriteRenderer.transform.rotation = !AttachedToBody ? Quaternion.Euler(Vector3.forward * partDetails.RotationEuler) : Quaternion.Euler(Vector3.forward);
 
 
@@ -52,10 +59,10 @@ public class BodyPartVisual : MonoBehaviour
         
     }
 
-    public void ResetRotationsAndTranslations(bool isBody)
+    public void ResetRotationsAndTranslations(bool isBody, Transform tf = null)
     {
         AttachedToBody = isBody;
         Debug.Log($"AttachedToBody {isBody}");
-        SwitchTexture();
+        SwitchTexture(tf);
     }
 }
