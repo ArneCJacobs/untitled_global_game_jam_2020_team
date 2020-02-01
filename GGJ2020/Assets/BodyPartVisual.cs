@@ -7,11 +7,15 @@ using UnityEngine;
 public class BodyPartVisual : MonoBehaviour
 {
     public Part AssignedPart = null;
+    public PartType PartTypeOverride = PartType.HEAD;
     public bool AttachedToBody = true;
     // Start is called before the first frame update
     void Start()
     {
-        AssignPart(PartGenerator.GeneratePart());
+        if (PartTypeOverride != PartType.TORSO)
+            AssignPart(PartGenerator.GeneratePart());
+        else
+            AssignPart(PartGenerator.GeneratePart(PartType.TORSO));
     }
 
     // Update is called once per frame

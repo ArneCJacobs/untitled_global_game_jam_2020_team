@@ -27,7 +27,8 @@ public class ClickDragTest : MonoBehaviour
         transform.position = cursorPosition;
         
         var snaps = GameObject.FindObjectsOfType<SnappingPoint>().ToArray();
-        var rslt = GetDistanceToClosestSnappingPoint(snaps);
+        var snapsInChildren = GetComponentsInChildren<SnappingPoint>();
+        var rslt = GetDistanceToClosestSnappingPoint(snaps.Where(o => !snapsInChildren.Contains(o)).ToArray());
         if (rslt.distance < snappingDistance)
         {
             Debug.DrawLine(transform.position, rslt.target.transform.position, Color.green, 0, false);

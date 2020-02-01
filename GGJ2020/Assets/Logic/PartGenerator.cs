@@ -18,12 +18,17 @@ namespace Logic
             return (float) (randNormal* 100);
         }
 
-        public static Part GeneratePart()
+        public static Part GeneratePart(PartType? type = null)
         {
             Part newPart = new Part();
 
-            int maxValue = (int)Enum.GetValues(typeof(PartType)).Cast<PartType>().Max();
-            newPart.Type = (PartType) rnd.Next(maxValue + 1);
+            if (!type.HasValue)
+            {
+                int maxValue = (int)Enum.GetValues(typeof(PartType)).Cast<PartType>().Max();
+                newPart.Type = (PartType)rnd.Next(maxValue + 1);
+            }
+            else
+                newPart.Type = type.Value;
             newPart.Description = "test description"; //TODO
             newPart.Name = newPart.Type.ToString(); //TODO
             newPart.Stats = new Stats()

@@ -15,13 +15,15 @@ public class SnappingPoint : MonoBehaviour
     void Start()
     {
         tag = "snap";
-
+        if (transform.parent != null)
+            transform.localScale = transform.parent.localScale;
     }
 
 
     public SnappingPoint()
     {
         AcceptedTypes = new List<PartType>();
+
         // Preferred = PartType.HEAD;
     }
 

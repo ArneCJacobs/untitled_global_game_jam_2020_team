@@ -16,6 +16,7 @@ namespace Game.GUI
             { PartType.LEFTLEG,  new PartFactoryType() { AssetName = "Textures/BodyParts/Zombie/Zombie_Leg_Left_01", SizeModifier = 0.3f, RotationEuler = 90.0f, YOffset = -2.2f } },
             { PartType.RIGHTARM,  new PartFactoryType() { AssetName = "Textures/BodyParts/Zombie/Zombie_Arm_Right_01", SizeModifier = 0.4f, RotationEuler = 85.0f, YOffset = -2.2f } },
             { PartType.RIGHTLEG,  new PartFactoryType() { AssetName = "Textures/BodyParts/Zombie/Zombie_Leg_Right_01", SizeModifier = 0.3f, RotationEuler = -95.0f, YOffset = -2.2f } },
+            { PartType.TORSO,  new PartFactoryType() { AssetName = "Textures/BodyParts/Zombie/Zombie_Torso_01", SizeModifier = 1.0f, RotationEuler = 0.0f, YOffset = 0.0f } },
 
         };
 
