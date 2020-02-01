@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8177265473426133242}
   - component: {fileID: 5235171493111521638}
   - component: {fileID: -5757128745666745868}
+  - component: {fileID: -3226339147183334726}
   m_Layer: 0
   m_Name: BodyPart
   m_TagString: Untagged
@@ -109,6 +110,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a04ba4e18f3e05046b33819cb11c1a11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PartTypeOverride: 1
+  AttachedToBody: 1
 --- !u!60 &-5757128745666745868
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -147,3 +150,18 @@ PolygonCollider2D:
       - {x: 0.38, y: -0.52}
       - {x: 0.38, y: 0.31}
       - {x: 0.35999998, y: 0.34}
+--- !u!114 &-3226339147183334726
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8177265473426133243}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 332c6b00d100baec0a54a596ee2eb182, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  simpleTooltipStyle: {fileID: 11400000, guid: f1d1c287ded68be43934c42c517f05d2, type: 2}
+  infoLeft: Hello
+  infoRight: 

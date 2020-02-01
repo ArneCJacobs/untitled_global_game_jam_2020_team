@@ -36,13 +36,20 @@ namespace Logic
             if (!type.HasValue)
             {
                 int maxValue = (int)Enum.GetValues(typeof(PartType)).Cast<PartType>().Max();
-                newPart.Type = (PartType)rnd.Next(1,maxValue + 1);
+                newPart.Type = (PartType)rnd.Next(1, maxValue + 1);
             }
             else
                 newPart.Type = type.Value;
             newPart.Description = "test description"; //TODO
             newPart.Name = newPart.Type.ToString(); //TODO
-            newPart.Stats = new Stats()
+            GenerateStats();
+
+            return newPart;
+        }
+
+        private static Stats GenerateStats()
+        {
+            return new Stats()
             {
                 Speed = NextFloat(),
                 Vitality = NextFloat(),
