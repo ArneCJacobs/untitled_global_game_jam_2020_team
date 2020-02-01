@@ -7,7 +7,7 @@ using UnityEngine.Serialization;
 
 public class ClickDragTest : MonoBehaviour
 {
-    public float snappingDistance = 10f;
+    public float snappingDistance = 100f;
     private Vector3 startPos;
     private GameObject snappedTo;
     private GameObject startSnappedTo;
@@ -24,6 +24,14 @@ public class ClickDragTest : MonoBehaviour
     {
         Vector2 cursorPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition); //getting cursor position
         transform.position = cursorPosition;
+        
+        var snaps = GameObject.FindGameObjectsWithTag("snap").Select((o => o.transform)).ToArray();
+        var rslt = GetDistanceToClosestSnappingPoint(snaps);
+        if (rslt.distance < snappingDistance)
+        {
+            Debug.DrawLine(transform.position, rslt.target.position, Color.green, 0, false);
+            // this.transform.SetParent(snappedTo.transform);
+        }
     }
 
     private void Update()
