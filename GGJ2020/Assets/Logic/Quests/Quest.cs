@@ -24,7 +24,7 @@ namespace Logic
             Random random = new Random();
             foreach (Body body in party.Bodies)
             {
-                foreach (Slot slot in body.Slots)
+                foreach (SnappingPoint slot in body.Slots)
                 {
                     if (random.NextDouble() > 0.5)
                     {
