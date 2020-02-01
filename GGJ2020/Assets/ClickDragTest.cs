@@ -51,9 +51,11 @@ public class ClickDragTest : MonoBehaviour
         if (rslt.distance< snappingDistance)
         {           
             transform.position= rslt.target.transform.position;
+
             snappedTo = rslt.target.gameObject;
 
             SnappingPoint snappingPoint = snappedTo.GetComponent<SnappingPoint>();
+
             if (snappingPoint != null)
             {
                 snappingPoint.UnSnap();
@@ -88,6 +90,7 @@ public class ClickDragTest : MonoBehaviour
             float dSqrToTarget = directionToTarget.sqrMagnitude;
             if (dSqrToTarget < closestDistanceSqr && (partComponent == null || potentialTarget.CanSnap(gameObject)))
             {
+                
                 closestDistanceSqr = dSqrToTarget;
                 bestTarget = potentialTarget;
             }

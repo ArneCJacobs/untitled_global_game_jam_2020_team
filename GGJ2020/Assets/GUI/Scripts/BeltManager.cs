@@ -24,7 +24,7 @@ public class BeltManager : MonoBehaviour
     float m_maxDist = 1.0f;
 
     public GameObject BeltSnapObject;
-
+    
     public List<GameObject> beltContentsList = new List<GameObject>();
 
     public struct BeltObject
@@ -116,5 +116,11 @@ public class BeltManager : MonoBehaviour
 
         var snapComp = lastItem.GetComponent<SnappingPoint>();
         snapComp.UnSnap(true);
+
+    }
+
+    public void AddObjectToQueue(GameObject part)
+    {
+
     }
 }
