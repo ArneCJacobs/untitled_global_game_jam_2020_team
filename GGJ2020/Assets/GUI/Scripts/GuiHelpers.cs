@@ -12,13 +12,12 @@ namespace Game.GUI
     {
         static Dictionary<PartType, PartFactoryType> m_partsDict = new Dictionary<PartType, PartFactoryType>()
         {
-            { PartType.HEAD,        new PartFactoryType() { AssetName = "Textures/BodyParts/Zombie/Zombie_Head_01", SizeModifier = 1.0f, RotationEuler = 10.0f, YOffset = -1.3f        , Offset= new Vector3(1.0f,-2.0f)} },
-            { PartType.LEFTARM,     new PartFactoryType() { AssetName = "Textures/BodyParts/Zombie/Zombie_Arm_Left_01", SizeModifier = 0.4f, RotationEuler = 85.0f, YOffset = -2.2f    , Offset= new Vector3(1.0f,-2.0f)} },
-            { PartType.LEFTLEG,     new PartFactoryType() { AssetName = "Textures/BodyParts/Zombie/Zombie_Leg_Left_01", SizeModifier = 0.3f, RotationEuler = 90.0f, YOffset = -2.2f    , Offset= new Vector3(1.0f,-2.0f)} },
-            { PartType.RIGHTARM,    new PartFactoryType() { AssetName = "Textures/BodyParts/Zombie/Zombie_Arm_Right_01", SizeModifier = 0.4f, RotationEuler = 85.0f, YOffset = -2.2f   , Offset= new Vector3(1.0f,-2.0f)} },
-            { PartType.RIGHTLEG,    new PartFactoryType() { AssetName = "Textures/BodyParts/Zombie/Zombie_Leg_Right_01", SizeModifier = 0.3f, RotationEuler = -95.0f, YOffset = -2.2f  , Offset= new Vector3(1.0f,-2.0f)} },
-            { PartType.TORSO,       new PartFactoryType() { AssetName = "Textures/BodyParts/Zombie/Zombie_Torso_01", SizeModifier = 0.5f, RotationEuler = 0.0f, YOffset = 0.0f         , Offset= new Vector3(1.0f,-2.0f)} },
-
+            { PartType.HEAD,        new PartFactoryType() { AssetName = "Textures/BodyParts/Zombie/Zombie_Head_01"          ,BeltAssetName = "Textures/BodyParts/Zombie/Zombie_Head_Belt_01"      ,SizeModifier = 1.0f, RotationEuler = 10.0f, YOffset = -1.3f        } },
+            { PartType.LEFTARM,     new PartFactoryType() { AssetName = "Textures/BodyParts/Zombie/Zombie_Arm_Left_01"      ,BeltAssetName = "Textures/BodyParts/Zombie/Zombie_Arm_Left_Belt_01"  ,SizeModifier = 0.4f, RotationEuler = 85.0f, YOffset = -2.2f    } },
+            { PartType.LEFTLEG,     new PartFactoryType() { AssetName = "Textures/BodyParts/Zombie/Zombie_Leg_Left_01"      ,BeltAssetName = "Textures/BodyParts/Zombie/Zombie_Leg_Left_Belt_01"  ,SizeModifier = 0.3f, RotationEuler = 90.0f, YOffset = -2.2f    } },
+            { PartType.RIGHTARM,    new PartFactoryType() { AssetName = "Textures/BodyParts/Zombie/Zombie_Arm_Right_01"     ,BeltAssetName = "Textures/BodyParts/Zombie/Zombie_Arm_Right_Belt_01" ,SizeModifier = 0.4f, RotationEuler = 85.0f, YOffset = -2.2f   } },
+            { PartType.RIGHTLEG,    new PartFactoryType() { AssetName = "Textures/BodyParts/Zombie/Zombie_Leg_Right_01"     ,BeltAssetName = "Textures/BodyParts/Zombie/Zombie_Leg_Right_Belt_01" ,SizeModifier = 0.3f, RotationEuler = -95.0f, YOffset = -2.2f  } },
+            { PartType.TORSO,       new PartFactoryType() { AssetName = "Textures/BodyParts/Zombie/Zombie_Torso_01"         ,BeltAssetName = "Textures/BodyParts/Zombie/Zombie_Torso_01"     ,SizeModifier = 0.5f, RotationEuler = 0.0f, YOffset = 0.0f         } },
         };
 
         public static PartFactoryType GetPartTypeDetails(PartType partType)
@@ -30,9 +29,9 @@ namespace Game.GUI
     public struct PartFactoryType
     {
         public string AssetName;
+        public string BeltAssetName;
         public float SizeModifier;
         public float RotationEuler;
         public float YOffset;
-        public Vector3 Offset;
     }
 }
