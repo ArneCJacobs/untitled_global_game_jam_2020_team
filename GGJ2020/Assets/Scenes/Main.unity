@@ -621,6 +621,11 @@ PrefabInstance:
       propertyPath: YOffset
       value: -2
       objectReference: {fileID: 0}
+    - target: {fileID: 1125438441559865167, guid: 3a4dbdba76e7d5745af0ec8dc6b9cf6e,
+        type: 3}
+      propertyPath: BeltLength
+      value: 12
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3a4dbdba76e7d5745af0ec8dc6b9cf6e, type: 3}
 --- !u!1001 &1244310811310355350

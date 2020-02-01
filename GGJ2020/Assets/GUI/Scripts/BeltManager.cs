@@ -92,10 +92,7 @@ public class BeltManager : MonoBehaviour
 
         foreach (var item in beltContentsList)
         {
-            //var partDetails = GuiHelpers.GetPartTypeDetails(item);
-           // var bp = item.GetComponent<BodyPartVisual>();
             var tf = item.GetComponent<Transform>();
-          //  var partDetails = GuiHelpers.GetPartTypeDetails(bp.AssignedPart.Type);
 
             tf.position += new Vector3(moveAmount, 0, 0);
             if (tf.position.x > BeltLength)
@@ -119,14 +116,32 @@ public class BeltManager : MonoBehaviour
 
     private void MoveNext()
     {
-        for (int i = 0; i < beltContentsList.Count; i++)
-        {
-            if (i < m_partsList.Count && i >= 0)
-            {
-                //var gameobj = beltContentsList[i].GetComponent<BodyPartVisual>();
-                //gameobj.AssignPart(m_partsList[i]);
-            }
-        }
+        //for (int i = 0; i < beltContentsList.Count; i++)
+        //{
+        //    if (i < m_partsList.Count && i >= 0)
+        //    {
+        //        //var gameobj = beltContentsList[i].GetComponent<BodyPartVisual>();
+        //        //gameobj.AssignPart(m_partsList[i]);
+
+        //    }
+        //}
+
+        //var gameobj = beltContentsList[i].GetComponent<BodyPartVisual>();
+        var lastItem = beltContentsList.OrderByDescending(o => o.GetComponent<Transform>().position.x).FirstOrDefault();
+        if (lastItem == null)
+            return;
+
+        var snapComp = lastItem.GetComponent<SnappingPoint>();
+        if (snapComp.SnappedObject != null)
+            GameObject.Destroy(snapComp.SnappedObject);
+
+
+        // GameObject.Destroy(beltContentsList.Last());
+    }
+
+    private void RemoveLastItem()
+    {
+
     }
 
     private void SwitchTexture(Part part,GameObject obj)

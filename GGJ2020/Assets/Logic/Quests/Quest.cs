@@ -28,8 +28,8 @@ namespace Logic
                 {
                     if (random.NextDouble() > 0.5)
                     {
-                        Part part = slot.AssignedPart;
-                        part.Stats.Durability -= (float) random.NextDouble() * avrDamage;
+                      //  Part part = slot.AssignedPart;
+                        //part.Stats.Durability -= (float) random.NextDouble() * avrDamage;
                     }
                 }
             }

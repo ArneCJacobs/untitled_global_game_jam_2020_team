@@ -12,7 +12,7 @@ public class TestScene : MonoBehaviour
         var testPart = new Part();
 
         var testBody = new Body();
-        testBody.Slots[0].AssignedPart = testPart;
+       // testBody.Slots[0].AssignedPart = testPart;
         
 
         var testParty = new Party();

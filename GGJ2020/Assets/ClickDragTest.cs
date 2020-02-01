@@ -31,7 +31,6 @@ public class ClickDragTest : MonoBehaviour
         if (rslt.distance < snappingDistance)
         {
             Debug.DrawLine(transform.position, rslt.target.transform.position, Color.green, 0, false);
-            // this.transform.SetParent(snappedTo.transform);
         }
     }
 
@@ -49,11 +48,11 @@ public class ClickDragTest : MonoBehaviour
         SnappingPoint[] snaps = GameObject.FindObjectsOfType<SnappingPoint>();
         var rslt = GetDistanceToClosestSnappingPoint(snaps);
         PartComponent partComponent = GetComponent<PartComponent>();
-        if (rslt.distance< snappingDistance && (partComponent == null || rslt.target.CanSnap(partComponent.part)))
+        if (rslt.distance< snappingDistance && (partComponent == null || rslt.target.CanSnap(gameObject)))
         {
             transform.position= rslt.target.transform.position;
             snappedTo = rslt.target.gameObject;
-            // this.transform.SetParent(snappedTo.transform);
+            this.transform.SetParent(snappedTo.transform);
         }
         else
         {
