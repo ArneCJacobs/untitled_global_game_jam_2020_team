@@ -1,7 +1,13 @@
-namespace Logic
+namespace Logic.Quests
 {
     public class BasicQuest : Quest
     {
+        public BasicQuest(float difficulty) : base(difficulty)
+        {
+            Description = "do a generic thing";
+            Title = "Chicken Chaser";
+
+        }
 
         public override QuestResult GetResult(Party party)
         {
