@@ -5,14 +5,9 @@ using UnityEngine;
 
 public class ClickDragTest : MonoBehaviour
 {
-    public SpringJoint2D spring;
-
-    float distance = 10;
-
-    private void OnMouseDrag()
+    void OnMouseDrag()
     {
-        Vector2 mousePos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
-
-        transform.position =mousePos;
+        Vector2 cursorPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition); //getting cursor position
+        transform.position = cursorPosition;
     }
 }
