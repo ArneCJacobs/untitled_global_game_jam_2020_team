@@ -45,12 +45,7 @@ public class SnappingPoint : MonoBehaviour
 
     public void UnSnap(bool destroy = false)
     {
-        Debug.Log($"destroy --- {AssignedPart}");
 
-        if (destroy && AssignedPart != null)
-        {
-            GameObject.Destroy(AssignedPart);
-        }
         AssignedPart = null;
     }
 

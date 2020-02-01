@@ -18,109 +18,136 @@ public class BeltManager : MonoBehaviour
     public float YOffset = 0.0f;
     public int ItemAmount = 5;
 
-    int counter = 0;
+    float m_frameTimer = 0.0f;
+    float m_maxFrameTimer = 1.0f / 60.0f;
+    public int MaxFramesPerBeltSection = 60;
+    public bool BodiesOnly= true;
 
-    float m_currentDist = 0.0f;
-    float m_maxDist = 1.0f;
+    private int m_currentFrameCounter = 0;
+
+    double m_dt;
+
 
     public GameObject BeltSnapObject;
-    
-    public List<GameObject> beltContentsList = new List<GameObject>();
+    public GameObject BeltSnapObjectAddition;
 
-    public struct BeltObject
-    {
-        public GameObject obj;
-        public Part part;
-    }
+    public List<(GameObject obj, int index)> BeltSlots = new List<(GameObject obj, int index)>();
+    int m_beltSlotCount = 1;
+    List<Part> QueuedPartList = new List<Part>();
 
-    List<Part> m_partsQueue = new List<Part>();
-    List<Part> m_partsList = new List<Part>();
+    List<Part> PartList = new List<Part>();
+
+
 
     // Start is called before the first frame update
     void Start()
     {
-        m_maxDist = (BeltLength * 2) / ItemAmount;
+
+
+        m_beltSlotCount = ItemAmount;
         for (int i = 0; i < ItemAmount; i++)
         {
-            var part = PartGenerator.GeneratePart();
-            var partDetails = GuiHelpers.GetPartTypeDetails(part.Type);
-            var gameobj = GameObject.Instantiate(BeltSnapObject) as GameObject;
-            gameobj.GetComponent<Transform>().position -= new Vector3(BeltLength, YOffset, 0);
-            gameobj.GetComponent<Transform>().position += new Vector3(i * m_maxDist, 0,0);
-            m_partsList.Add(part);
-            beltContentsList.Add(gameobj);
+            BeltSlots.Add((GameObject.Instantiate(BeltSnapObject), i));
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-        i_moveBelt();
-        if (MaxMoveTime > 0.0f)
-        {
-            ScrollSpeed = MaxScrollSpeed;
-            MaxMoveTime -= Time.deltaTime;
 
-            i_moveItemsOnBelt();
+        if (m_frameTimer > 0)
+        {
+            m_frameTimer -= Time.deltaTime;
+            m_dt += Time.deltaTime;
         }
         else
-            ScrollSpeed = 0;
-
-    }
-
-    private void i_moveBelt()
-    {
-        var scrollComps = GetComponentsInChildren<TextureScroll>();
-        var rotationComps = GetComponentsInChildren<Rotation>();
-        foreach (var scrollcomp in scrollComps)
-            scrollcomp.ScrollSpeed = ScrollSpeed;
-        foreach (var rotationComp in rotationComps)
-            rotationComp.RotationSpeed = ScrollSpeed * 160;
-    }
-
-    void i_moveItemsOnBelt()
-    {
-        var moveAmount = 0.01f * ScrollSpeed;
-
-        i_trackMovement(moveAmount);
-
-        foreach (var item in beltContentsList)
         {
-            var tf = item.GetComponent<Transform>();
+            m_frameTimer = m_maxFrameTimer;
+            AdvanceFrame(m_dt);
+            m_dt = 0.0f;
 
-            tf.position += new Vector3(moveAmount, 0, 0);
-            if (tf.position.x > BeltLength)
-                tf.position -= new Vector3(BeltLength * 2, 0);
-
-            tf.position = new Vector3(tf.position.x, YOffset);
         }
 
+        UpdateMovement(m_dt);
     }
 
-    private void i_trackMovement(float moveAmount)
+    public void AdvanceFrame(double dt)
     {
-        if (m_currentDist < m_maxDist)
-            m_currentDist += moveAmount;
+       
+        i_advanceFrameTimer(dt);
+    }
+
+    public static float Damp(float source, float target, float smoothing, float dt)
+    {
+        return Mathf.Lerp(source, target, 1 - Mathf.Pow(smoothing, dt));
+    }
+
+    private void UpdateMovement(double dt)
+    {
+        
+        for (int i = 0; i < ItemAmount; i++)
+        {
+            var item = BeltSlots[i];
+            var perc = (float)m_currentFrameCounter / (float)MaxFramesPerBeltSection;
+            var sectionLength = BeltLength / ItemAmount;
+
+            //sectionLength * m_dt;
+
+            var lerpVal = UnityEngine.Mathf.Lerp((item.index * sectionLength) - (BeltLength / 2), (item.index + 1) * sectionLength - (BeltLength / 2), perc);
+            item.obj.transform.position = new Vector3(lerpVal, 0.0f, 0.0f);
+            var ob = BeltSlots.Select(o => o.obj).FirstOrDefault();
+            if (ob != null)
+                Debug.Log(ob.transform.position);
+        }
+    }
+
+    private void i_advanceFrameTimer(double dt)
+    {
+        if (m_currentFrameCounter > MaxFramesPerBeltSection)
+        {
+            for (int i = 0; i < BeltSlots.Count; i++)
+                BeltSlots[i] = (BeltSlots[i].obj, BeltSlots[i].index + 1);
+
+            RemoveItemFromQueue();
+            AddItemToQueue(PartGenerator.GeneratePart());
+            m_currentFrameCounter = 0;
+        }
         else
-        {
-            m_currentDist = 0.0f;
-            MoveNext();
-        }
+            m_currentFrameCounter++;
     }
 
-    private void MoveNext()
-    {
-        var lastItem = beltContentsList.OrderByDescending(o => o.GetComponent<Transform>().position.x).FirstOrDefault();
-        if (lastItem == null)
-            return;
 
-        var snapComp = lastItem.GetComponent<SnappingPoint>();
-        snapComp.UnSnap(true);
+    public void AddItemToQueue(Part part)
+    {
+        var obj = Resources.Load("Prefabs/BodyPart") as GameObject;
+        var instObj = GameObject.Instantiate(obj);
+
+        var beltObj = GameObject.Instantiate(BeltSnapObject);
+        BeltSlots.Add((beltObj, 0));
+
+        var snapComp = beltObj.GetComponent<SnappingPoint>();
+
+        var comp = instObj.GetComponent<ClickDragTest>();
+        comp.snappedTo = beltObj;
+        comp.startSnappedTo = beltObj;
+        var bodVs = instObj.GetComponent<BodyPartVisual>();
+        snapComp.AssignGameObject(instObj);
+
+        bodVs.ResetRotationsAndTranslations(false, beltObj.transform);
 
     }
 
-    public void AddObjectToQueue(GameObject part)
+    public void RemoveItemFromQueue()
     {
+        Debug.Log("removed item");
 
+        var toRemoveItem = BeltSlots.FirstOrDefault(x => x.index == m_beltSlotCount);
+
+        var snapComp = toRemoveItem.obj.GetComponent<SnappingPoint>();
+        var attachedObj = snapComp.AssignedPart;
+
+        BeltSlots.Remove(toRemoveItem);
+        Destroy(attachedObj);
+        Destroy(toRemoveItem.obj);
     }
 }

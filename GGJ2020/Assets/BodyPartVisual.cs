@@ -35,6 +35,8 @@ public class BodyPartVisual : MonoBehaviour
         var spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
         spriteRenderer.transform.rotation = Quaternion.Euler(Vector3.forward);
+        if (AssignedPart == null)
+            return;
 
         var partDetails = GuiHelpers.GetPartTypeDetails(AssignedPart.Type);
         var sprite = Resources.Load<Sprite>(AttachedToBody ? partDetails.AssetName : partDetails.BeltAssetName);
@@ -48,12 +50,6 @@ public class BodyPartVisual : MonoBehaviour
         else
             spriteRenderer.transform.localScale = new Vector3(partDetails.SizeModifier, partDetails.SizeModifier, 1.0f);
 
-        //if (AttachedToBody)
-        //    spriteRenderer.transform.localPosition += partDetails.Offset;
-
-       // spriteRenderer.transform.rotation = !AttachedToBody ? Quaternion.Euler(Vector3.forward * partDetails.RotationEuler) : Quaternion.Euler(Vector3.forward);
-
-
         Destroy(GetComponent<PolygonCollider2D>());
         gameObject.AddComponent<PolygonCollider2D>();
         
@@ -62,7 +58,6 @@ public class BodyPartVisual : MonoBehaviour
     public void ResetRotationsAndTranslations(bool isBody, Transform tf = null)
     {
         AttachedToBody = isBody;
-        Debug.Log($"AttachedToBody {isBody}");
         SwitchTexture(tf);
     }
 }
