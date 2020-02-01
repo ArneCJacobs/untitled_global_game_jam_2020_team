@@ -9,11 +9,13 @@ public class QuestResultBox : MonoBehaviour
     // Start is called before the first frame update
     private GameObject goldReward;
     private GameObject questOutcome;
+    private GameObject loot;
 
     void Start()
     {
         goldReward = transform.Find("GoldReward").gameObject;
         questOutcome = transform.Find("QuestOutcome").gameObject;
+        loot = transform.Find("Loot").gameObject;
     }
 
     public void Display(QuestResult qr)
@@ -21,6 +23,7 @@ public class QuestResultBox : MonoBehaviour
         Debug.Log(qr.Gold.ToString());
         goldReward.GetComponent<Text>().text = $"Gold: {qr.Gold.ToString()}";
         questOutcome.GetComponent<Text>().text = qr.success ? "Success!" : "Fail!";
+        loot.GetComponent<LootRewardBox>().Display(qr.Loot);
     }
 
 

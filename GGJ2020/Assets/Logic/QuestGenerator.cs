@@ -12,8 +12,8 @@ namespace Logic
         {
             questList = new List<Func<float, Quest>>
             {
-                 (d) => new BasicQuest(d),
-                 (d) => new ChickenQuest(d),
+                 // (d) => new BasicQuest(d),
+                 // (d) => new ChickenQuest(d),
                  (d) => new VillageMurderQuest(d)
             };
         }
