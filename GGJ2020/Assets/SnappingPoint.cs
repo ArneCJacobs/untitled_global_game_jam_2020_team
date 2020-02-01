@@ -6,7 +6,10 @@ using UnityEngine;
 public class SnappingPoint : MonoBehaviour
 {
     public bool IsTypeRestricted = false;
-    public GameObject SnappedObject = null;
+    public List<PartType> AcceptedTypes; 
+    public PartType Preferred { get; set; }
+    public GameObject AssignedPart; 
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -14,9 +17,6 @@ public class SnappingPoint : MonoBehaviour
 
     }
 
-    public List<PartType> AcceptedTypes; 
-    public PartType Preferred { get; set; }
-    public GameObject AssignedPart; 
 
     public SnappingPoint()
     {
@@ -31,8 +31,18 @@ public class SnappingPoint : MonoBehaviour
         if (bodypartVisualComp == null)
             return false;
 
-        SnappedObject = part;
+        AssignedPart = part;
         return AssignedPart == null && (IsTypeRestricted ? AcceptedTypes.Contains(bodypartVisualComp.AssignedPart.Type) : true);
+    }
+
+
+    public void UnSnap(bool destroy = false)
+    {
+        if (destroy && AssignedPart != null)
+        {
+            GameObject.Destroy(AssignedPart);
+        }
+        AssignedPart = null;
     }
 
     // Update is called once per frame
