@@ -1,10 +1,8 @@
 ﻿using Game.GUI;
 using Logic;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class BeltManager : MonoBehaviour
 {
@@ -13,20 +11,16 @@ public class BeltManager : MonoBehaviour
     public float MaxScrollSpeed = 1.0f;
     public float CurrentMoveTime = 5.0f;
     public float MaxMoveTime = 5.0f;
+    private float TimeToPosition = 1.0f;
     public float BeltLength = 50.0f;
     public float Imagesize = 50.0f;
     public float YOffset = 0.0f;
     public int ItemAmount = 5;
+    public float BeltTimer;
+    public float LerpValue;
 
     float m_frameTimer = 0.0f;
-    float m_maxFrameTimer = 1.0f / 60.0f;
-    public int MaxFramesPerBeltSection = 60;
     public bool BodiesOnly= true;
-
-    private int m_currentFrameCounter = 0;
-
-    double m_dt;
-
 
     public GameObject BeltSnapObject;
     public GameObject BeltSnapObjectAddition;
@@ -37,13 +31,9 @@ public class BeltManager : MonoBehaviour
 
     List<Part> PartList = new List<Part>();
 
-
-
     // Start is called before the first frame update
     void Start()
     {
-
-
         m_beltSlotCount = ItemAmount;
         for (int i = 0; i < ItemAmount; i++)
         {
@@ -54,72 +44,50 @@ public class BeltManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        if (m_frameTimer > 0)
+        if (m_frameTimer <= 0)
         {
-            m_frameTimer -= Time.deltaTime;
-            m_dt += Time.deltaTime;
+            i_advanceBelt();
+            m_frameTimer = TimeToPosition;
         }
         else
         {
-            m_frameTimer = m_maxFrameTimer;
-            AdvanceFrame(m_dt);
-            m_dt = 0.0f;
-
+            m_frameTimer -= Time.deltaTime;
         }
-
-        UpdateMovement(m_dt);
+        UpdateMovement();
     }
 
-    public void AdvanceFrame(double dt)
+    private void UpdateMovement()
     {
-       
-        i_advanceFrameTimer(dt);
-    }
+        BeltTimer += Time.deltaTime / TimeToPosition;
 
-    public static float Damp(float source, float target, float smoothing, float dt)
-    {
-        return Mathf.Lerp(source, target, 1 - Mathf.Pow(smoothing, dt));
-    }
-
-    private void UpdateMovement(double dt)
-    {
-        
         for (int i = 0; i < ItemAmount; i++)
         {
             var item = BeltSlots[i];
-            var perc = (float)m_currentFrameCounter / (float)MaxFramesPerBeltSection;
             var sectionLength = BeltLength / ItemAmount;
 
-            //sectionLength * m_dt;
-
-            var lerpVal = UnityEngine.Mathf.Lerp((item.index * sectionLength) - (BeltLength / 2), (item.index + 1) * sectionLength - (BeltLength / 2), perc);
-            item.obj.transform.position = new Vector3(lerpVal, YOffset, 0.0f);
+            LerpValue = Mathf.Lerp((item.index * sectionLength) - (BeltLength / 2), (item.index + 1) * sectionLength - (BeltLength / 2), BeltTimer);
+            item.obj.transform.position = new Vector3(LerpValue, 0.0f, 0.0f);
             var ob = BeltSlots.Select(o => o.obj).FirstOrDefault();
             if (ob != null)
                 Debug.Log(ob.transform.position);
         }
     }
 
-    private void i_advanceFrameTimer(double dt)
+    private void i_advanceBelt()
     {
-        if (m_currentFrameCounter > MaxFramesPerBeltSection)
-        {
-            for (int i = 0; i < BeltSlots.Count; i++)
-                BeltSlots[i] = (BeltSlots[i].obj, BeltSlots[i].index + 1);
+        for (int i = 0; i < BeltSlots.Count; i++)
+            BeltSlots[i] = (BeltSlots[i].obj, BeltSlots[i].index + 1);
 
-            RemoveItemFromQueue();
-            AddItemToQueue(PartGenerator.GeneratePart());
-            m_currentFrameCounter = 0;
-        }
-        else
-            m_currentFrameCounter++;
+        RemoveItemFromQueue();
+        AddItemToQueue(PartGenerator.GeneratePart());
+        BeltTimer = 0;
     }
 
 
     public void AddItemToQueue(Part part)
     {
-        var instObj = GameObject.Instantiate(BeltSnapObjectAddition);
+        var obj = Resources.Load("Prefabs/BodyPart") as GameObject;
+        var instObj = GameObject.Instantiate(obj);
 
         var beltObj = GameObject.Instantiate(BeltSnapObject);
         BeltSlots.Add((beltObj, 0));
@@ -134,6 +102,7 @@ public class BeltManager : MonoBehaviour
 
         bodVs.ResetRotationsAndTranslations(false, beltObj.transform);
 
+        instObj.transform.position = new Vector3(-20.0f, 0.0f, 0.0f);
     }
 
     public void RemoveItemFromQueue()
