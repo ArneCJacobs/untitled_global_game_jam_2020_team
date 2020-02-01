@@ -41,9 +41,9 @@ public class BeltManager : MonoBehaviour
         {
             var part = PartGenerator.GeneratePart();
             var partDetails = GuiHelpers.GetPartTypeDetails(part.Type);
-            var gameobj = GameObject.Instantiate(Resources.Load("Prefabs/BodyPart")) as GameObject;
-            gameobj.GetComponent<BodyPartVisual>().AssignPart(part);
-            gameobj.GetComponent<Transform>().position -= new Vector3(BeltLength, partDetails.YOffset, 0);
+            var gameobj = GameObject.Instantiate(Resources.Load("Prefabs/BeltSnapObject")) as GameObject;
+           // gameobj.GetComponent<BodyPartVisual>().AssignPart(part);
+            gameobj.GetComponent<Transform>().position -= new Vector3(BeltLength, 0, 0);
             gameobj.GetComponent<Transform>().position += new Vector3(i * m_maxDist, 0,0);
             m_partsList.Add(part);
             beltContentsList.Add(gameobj);
@@ -90,15 +90,15 @@ public class BeltManager : MonoBehaviour
         foreach (var item in beltContentsList)
         {
             //var partDetails = GuiHelpers.GetPartTypeDetails(item);
-            var bp = item.GetComponent<BodyPartVisual>();
+           // var bp = item.GetComponent<BodyPartVisual>();
             var tf = item.GetComponent<Transform>();
-            var partDetails = GuiHelpers.GetPartTypeDetails(bp.AssignedPart.Type);
+          //  var partDetails = GuiHelpers.GetPartTypeDetails(bp.AssignedPart.Type);
 
             tf.position += new Vector3(moveAmount, 0, 0);
             if (tf.position.x > BeltLength)
                 tf.position -= new Vector3(BeltLength * 2, 0);
 
-            tf.position = new Vector3(tf.position.x, partDetails.YOffset);
+            tf.position = new Vector3(tf.position.x, 0);
         }
 
     }
@@ -120,8 +120,8 @@ public class BeltManager : MonoBehaviour
         {
             if (i < m_partsList.Count && i >= 0)
             {
-                var gameobj = beltContentsList[i].GetComponent<BodyPartVisual>();
-                gameobj.AssignPart(m_partsList[i]);
+                //var gameobj = beltContentsList[i].GetComponent<BodyPartVisual>();
+                //gameobj.AssignPart(m_partsList[i]);
             }
         }
     }

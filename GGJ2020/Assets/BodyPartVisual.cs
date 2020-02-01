@@ -10,7 +10,7 @@ public class BodyPartVisual : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        AssignPart(PartGenerator.GeneratePart());
     }
 
     // Update is called once per frame
