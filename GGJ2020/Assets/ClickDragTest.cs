@@ -41,7 +41,7 @@ public class ClickDragTest : MonoBehaviour
         {
             transform.position= rslt.target.position;
             snappedTo = rslt.target.gameObject;
-            this.transform.SetParent(snappedTo.transform);
+           // this.transform.SetParent(snappedTo.transform);
         }
         else
         {

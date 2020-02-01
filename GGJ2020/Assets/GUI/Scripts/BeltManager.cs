@@ -40,7 +40,7 @@ public class BeltManager : MonoBehaviour
             beltContentsList.Add(gameobj);
         }
 
-        for (int i = 0; i < 30; i++)
+        for (int i = 0; i < ItemAmount; i++)
         {
             m_partsList.Add(PartGenerator.GeneratePart());
         }
@@ -104,9 +104,11 @@ public class BeltManager : MonoBehaviour
 
     private void MoveNext()
     {
-        var lastitem = m_partsList.Last();
-        if (lastitem != null)
+        if (m_partsList.Count > 0)
+        {
+            var lastitem = m_partsList.Last();
             m_partsList.Remove(lastitem);
+        }
 
         if (m_partsQueue.Count > 0)
         {
