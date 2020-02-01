@@ -25,31 +25,34 @@ public class BeltManager : MonoBehaviour
 
     public GameObject BeltSnapObject;
     
-    public List<GameObject> beltContentsList = new List<GameObject>();
-
     public struct BeltObject
     {
         public GameObject obj;
         public Part part;
     }
 
-    List<Part> m_partsQueue = new List<Part>();
-    List<Part> m_partsList = new List<Part>();
+    QueueManager queueman;
 
     // Start is called before the first frame update
     void Start()
     {
         m_maxDist = (BeltLength * 2) / ItemAmount;
+        queueman = new QueueManager(ItemAmount);
+
         for (int i = 0; i < ItemAmount; i++)
         {
-            var part = PartGenerator.GeneratePart();
-            var partDetails = GuiHelpers.GetPartTypeDetails(part.Type);
-            var gameobj = GameObject.Instantiate(BeltSnapObject) as GameObject;
-            gameobj.GetComponent<Transform>().position -= new Vector3(BeltLength, YOffset, 0);
-            gameobj.GetComponent<Transform>().position += new Vector3(i * m_maxDist, 0,0);
-            m_partsList.Add(part);
-            beltContentsList.Add(gameobj);
+            queueman.BeltSlots[i] = GameObject.Instantiate(BeltSnapObject);
+            queueman.BeltSlots[i].transform.parent = gameObject.transform;
+            //queueman.BeltSlots[i].GetComponent<Transform>().position += new Vector3(, YOffset, 0);
+            queueman.BeltSlots[i].GetComponent<Transform>().position += new Vector3((i * m_maxDist) - BeltLength, 0, 0);
         }
+
+        for (int i =0; i < 20; i++)
+        {
+            queueman.AddItemToQueue(PartGenerator.GeneratePart());
+        }
+
+        queueman.AdvanceQueue(ItemAmount);
     }
 
     // Update is called once per frame
@@ -84,7 +87,7 @@ public class BeltManager : MonoBehaviour
 
         i_trackMovement(moveAmount);
 
-        foreach (var item in beltContentsList)
+        foreach (var item in queueman.BeltSlots)
         {
             var tf = item.GetComponent<Transform>();
 
@@ -110,17 +113,83 @@ public class BeltManager : MonoBehaviour
 
     private void MoveNext()
     {
-        var lastItem = beltContentsList.OrderByDescending(o => o.GetComponent<Transform>().position.x).FirstOrDefault();
-        if (lastItem == null)
-            return;
-
-        var snapComp = lastItem.GetComponent<SnappingPoint>();
-        snapComp.UnSnap(true);
-
+        queueman.AdvanceQueue();
     }
-
-    public void AddObjectToQueue(GameObject part)
+      
+    public class QueueManager
     {
+        public GameObject[] BeltSlots;
+        List<Part> QueuedPartList = new List<Part>();
 
+        List<Part> PartList = new List<Part>();
+
+        int m_counter = 0;
+
+        public QueueManager(int beltSlotCount)
+        {
+            BeltSlots = new GameObject[beltSlotCount];
+        }
+
+        public void AdvanceQueue(int steps = 1)
+        {
+            for (int i = 0; i < steps; i++)
+            {
+                var furthest = BeltSlots[m_counter];
+                var snapComp = furthest.GetComponent<SnappingPoint>();
+                //if (snapComp.AssignedPart == null)
+                //    GameObject.Destroy(snapComp.AssignedPart);
+
+                if (snapComp.AssignedPart == null)
+                    AddItemToQueue(m_counter);
+
+                i_advanceCounter();
+            }
+        }
+
+        public GameObject GetItemInSlot(int id)
+        {
+            if (id >= 0 && id < BeltSlots.Length)
+            {
+                var snapComp = BeltSlots[id].GetComponent<SnappingPoint>();
+                return snapComp.AssignedPart;
+            }
+            return null;
+        }
+
+        public void AddItemToQueue(int id)
+        {
+            var nextItem = QueuedPartList.FirstOrDefault();
+            if (nextItem == null)
+                return;
+            else
+            {
+                var obj = Resources.Load("Prefabs/BodyPart") as GameObject;
+                var beltSlot = BeltSlots[id];
+                var snapComp = BeltSlots[id].GetComponent<SnappingPoint>();
+
+                var comp = obj.GetComponent<ClickDragTest>();
+                comp.snappedTo = beltSlot;
+                comp.startSnappedTo = beltSlot;
+                var bodVs = obj.GetComponent<BodyPartVisual>();
+                GameObject.Instantiate(obj);
+                snapComp.AssignGameObject(obj);
+
+                bodVs.ResetRotationsAndTranslations(false, beltSlot.transform);
+            }
+            QueuedPartList.Remove(nextItem);
+        }
+
+        public void AddItemToQueue(Part part)
+        {
+            QueuedPartList.Add(part);
+        }
+
+        private void i_advanceCounter()
+        {
+            if (m_counter + 1 >= BeltSlots.Length)
+                m_counter = 0;
+            else
+                m_counter++;
+        }
     }
 }
