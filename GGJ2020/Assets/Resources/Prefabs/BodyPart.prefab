@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 8177265473426133240}
   - component: {fileID: 8177265473426133241}
   - component: {fileID: 8177265473426133242}
-  - component: {fileID: 8177265473426133247}
   - component: {fileID: 5235171493111521638}
+  - component: {fileID: -5757128745666745868}
   m_Layer: 0
   m_Name: BodyPart
   m_TagString: Untagged
@@ -96,9 +96,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c24b1ff6203a10e989c97ae99a8e8597, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  snappingDistance: 10
---- !u!61 &8177265473426133247
-BoxCollider2D:
+  snappingDistance: 1
+--- !u!114 &5235171493111521638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8177265473426133243}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a04ba4e18f3e05046b33819cb11c1a11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!60 &-5757128745666745868
+PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -120,18 +132,18 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1.28, y: 1.28}
-  m_EdgeRadius: 0
---- !u!114 &5235171493111521638
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8177265473426133243}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a04ba4e18f3e05046b33819cb11c1a11, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Points:
+    m_Paths:
+    - - {x: 0.25, y: 0.47}
+      - {x: 0.12, y: 0.53999996}
+      - {x: -0.12, y: 0.53999996}
+      - {x: -0.21, y: 0.5}
+      - {x: -0.29, y: 0.42999998}
+      - {x: -0.34, y: 0.32}
+      - {x: -0.38, y: 0.19999999}
+      - {x: -0.38, y: -0.55}
+      - {x: -0.35, y: -0.64}
+      - {x: 0.37, y: -0.64}
+      - {x: 0.38, y: -0.52}
+      - {x: 0.38, y: 0.31}
+      - {x: 0.35999998, y: 0.34}

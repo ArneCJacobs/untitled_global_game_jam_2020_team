@@ -15,12 +15,15 @@ public class BeltManager : MonoBehaviour
     public float MaxMoveTime = 5.0f;
     public float BeltLength = 50.0f;
     public float Imagesize = 50.0f;
+    public float YOffset = 0.0f;
     public int ItemAmount = 5;
 
     int counter = 0;
 
     float m_currentDist = 0.0f;
     float m_maxDist = 1.0f;
+
+    public GameObject BeltSnapObject;
 
     public List<GameObject> beltContentsList = new List<GameObject>();
 
@@ -41,9 +44,9 @@ public class BeltManager : MonoBehaviour
         {
             var part = PartGenerator.GeneratePart();
             var partDetails = GuiHelpers.GetPartTypeDetails(part.Type);
-            var gameobj = GameObject.Instantiate(Resources.Load("Prefabs/BeltSnapObject")) as GameObject;
+            var gameobj = GameObject.Instantiate(BeltSnapObject) as GameObject;
            // gameobj.GetComponent<BodyPartVisual>().AssignPart(part);
-            gameobj.GetComponent<Transform>().position -= new Vector3(BeltLength, 0, 0);
+            gameobj.GetComponent<Transform>().position -= new Vector3(BeltLength, YOffset, 0);
             gameobj.GetComponent<Transform>().position += new Vector3(i * m_maxDist, 0,0);
             m_partsList.Add(part);
             beltContentsList.Add(gameobj);
@@ -98,7 +101,7 @@ public class BeltManager : MonoBehaviour
             if (tf.position.x > BeltLength)
                 tf.position -= new Vector3(BeltLength * 2, 0);
 
-            tf.position = new Vector3(tf.position.x, 0);
+            tf.position = new Vector3(tf.position.x, YOffset);
         }
 
     }

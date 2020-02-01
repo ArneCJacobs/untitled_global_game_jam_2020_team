@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class SnappingPoint : MonoBehaviour
 {
+    public bool IsTypeRestricted = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,7 +26,7 @@ public class SnappingPoint : MonoBehaviour
 
     public bool CanSnap(Part part)
     {
-        return AssignedPart == null && AcceptedTypes.Contains(part.Type);
+        return AssignedPart == null && (IsTypeRestricted ? AcceptedTypes.Contains(part.Type) : true);
     }
 
     // Update is called once per frame

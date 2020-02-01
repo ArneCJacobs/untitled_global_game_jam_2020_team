@@ -40,5 +40,8 @@ public class BodyPartVisual : MonoBehaviour
         spriteRenderer.transform.localScale = new Vector3(partDetails.SizeModifier, partDetails.SizeModifier, 1.0f);
         spriteRenderer.transform.rotation = Quaternion.Euler(Vector3.forward * partDetails.RotationEuler);
 
+        Destroy(GetComponent<PolygonCollider2D>());
+        gameObject.AddComponent<PolygonCollider2D>();
+
     }
 }
