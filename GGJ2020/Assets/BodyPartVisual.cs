@@ -1,4 +1,5 @@
-﻿using Game.GUI;
+﻿using System;
+using Game.GUI;
 using Logic;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,16 +8,20 @@ using UnityEngine;
 public class BodyPartVisual : MonoBehaviour
 {
     public Part AssignedPart = null;
+
     // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
         AssignPart(PartGenerator.GeneratePart());
+    }
+
+    void Start()
+    {
     }
 
     // Update is called once per frame
     void Update()
     {
-        
     }
 
     public void AssignPart(Part part)
@@ -27,7 +32,6 @@ public class BodyPartVisual : MonoBehaviour
 
     private void SwitchTexture(Part part)
     {
-
         var spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
         spriteRenderer.transform.rotation = Quaternion.Euler(Vector3.forward);
@@ -42,6 +46,5 @@ public class BodyPartVisual : MonoBehaviour
 
         Destroy(GetComponent<PolygonCollider2D>());
         gameObject.AddComponent<PolygonCollider2D>();
-
     }
 }

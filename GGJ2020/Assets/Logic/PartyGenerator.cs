@@ -18,8 +18,8 @@ namespace Logic
 
             for (var i = 0; i < partAmount; i++)
             {
-                result.Bodies[rng.Next(result.Bodies.Count)].Slots[rng.Next(5)].AssignedPart =
-                    PartGenerator.GeneratePart();
+                // result.Bodies[rng.Next(result.Bodies.Count)].Slots[rng.Next(5)].AssignedPart =
+                    // PartGenerator.GeneratePart();
             }
 
             return result;

@@ -24,10 +24,10 @@ namespace Logic.Quests
             var qr = new QuestResult();
             qr.ReturnParty = party;
             DamageRandomParts(qr.ReturnParty, Difficulty / 100 + 4);
-            if (killedVictims <= 0) return qr;
+            // if (killedVictims <= 0) return qr;
 
             qr.Gold = killedVictims * party.GetAverageStats().Intelligence / 100;
-            for (var i = 0; i < killedVictims / 2; i++)
+            for (var i = 0; i < 10 / 2; i++)
             {
                 qr.Loot.Add(PartGenerator.GeneratePart());
             }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace Logic
 {
@@ -13,7 +14,10 @@ namespace Logic
             Slots = new List<SnappingPoint>();
             for (int i = 0; i < 5; i++)
             {
-                Slots.Add(new SnappingPoint());
+                var obj = new GameObject();
+                var snappingPoint = obj.AddComponent<SnappingPoint>();
+                
+                Slots.Add(snappingPoint);
             }
         }
 

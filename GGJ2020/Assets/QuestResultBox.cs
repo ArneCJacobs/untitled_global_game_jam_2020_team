@@ -11,7 +11,7 @@ public class QuestResultBox : MonoBehaviour
     private GameObject questOutcome;
     private GameObject loot;
 
-    void Start()
+    void Awake()
     {
         goldReward = transform.Find("GoldReward").gameObject;
         questOutcome = transform.Find("QuestOutcome").gameObject;

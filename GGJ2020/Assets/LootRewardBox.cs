@@ -19,13 +19,18 @@ public class LootRewardBox : MonoBehaviour
         this.parts = loot;
         for (var i = 0; i < parts.Count; i++)
         {
-            var part = parts[i];
-            var partImg =
-                GameObject.Instantiate(Resources.Load("Prefabs/Zombie_Head_01.prefab"), transform, true) as GameObject;
-            if (partImg != null)
-                partImg.transform.Translate(i * partImg.transform.GetComponent<RectTransform>().rect.width, 0, 0);
+            var partVisual = new GameObject();
+            partVisual.transform.parent = transform;
 
+            var sr = partVisual.AddComponent<SpriteRenderer>();
+            sr.sortingLayerName = "back";
+            var partImg = partVisual.AddComponent<BodyPartVisual>();
+            var rect = partVisual.AddComponent<RectTransform>();
 
+            partImg.transform.localScale = new Vector3(5, 5, 1);
+            var grid = transform.GetComponent<GridLayout>();
+            
+            // partImg.transform.position = transform.GetComponent<GridLayout>().CellToLocal(new Vector3Int(i, 0, 0));
         }
     }
 

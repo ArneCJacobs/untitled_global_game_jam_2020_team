@@ -30,7 +30,7 @@ namespace Logic
                     where random.NextDouble() > 0.5
                     select slot.AssignedPart)
                 {
-                    part.Stats.Durability -= (float) random.NextDouble() * avrDamage;
+                    // part.Stats.Durability -= (float) random.NextDouble() * avrDamage;
                 }
             }
         }
