@@ -26,12 +26,14 @@ namespace Logic.Quests
                                         Difficulty);
 
             var qr = new QuestResult();
+            qr.ReturnParty = party;
+            DamageRandomParts(qr.ReturnParty, Difficulty / 100);
             if (killedChickens <= 0) return qr;
 
-            qr.Gold = killedChickens * 100;
+            qr.Gold = killedChickens;
             for (var i = 0; i < killedChickens / 2; i++)
             {
-                qr.Loot.Add(new Part());
+                qr.Loot.Add(PartGenerator.GeneratePart());
             }
 
             return qr;
