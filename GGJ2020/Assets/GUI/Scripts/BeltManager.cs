@@ -11,7 +11,7 @@ public class BeltManager : MonoBehaviour
     public float MaxScrollSpeed = 1.0f;
     public float CurrentMoveTime = 5.0f;
     public float MaxMoveTime = 5.0f;
-    private float TimeToPosition = 1.0f;
+    public float TimeToPosition = 1.0f;
     public float BeltLength = 50.0f;
     public float Imagesize = 50.0f;
     public float YOffset = 0.0f;
@@ -66,7 +66,7 @@ public class BeltManager : MonoBehaviour
             var sectionLength = BeltLength / ItemAmount;
 
             LerpValue = Mathf.Lerp((item.index * sectionLength) - (BeltLength / 2), (item.index + 1) * sectionLength - (BeltLength / 2), BeltTimer);
-            item.obj.transform.position = new Vector3(LerpValue, 0.0f, 0.0f);
+            item.obj.transform.position = new Vector3(LerpValue, YOffset, 0.0f);
             var ob = BeltSlots.Select(o => o.obj).FirstOrDefault();
             if (ob != null)
                 Debug.Log(ob.transform.position);
@@ -86,8 +86,7 @@ public class BeltManager : MonoBehaviour
 
     public void AddItemToQueue(Part part)
     {
-        var obj = Resources.Load("Prefabs/BodyPart") as GameObject;
-        var instObj = GameObject.Instantiate(obj);
+        var instObj = GameObject.Instantiate(BeltSnapObjectAddition);
 
         var beltObj = GameObject.Instantiate(BeltSnapObject);
         BeltSlots.Add((beltObj, 0));
