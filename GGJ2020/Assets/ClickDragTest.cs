@@ -8,19 +8,31 @@ using UnityEngine.Serialization;
 
 public class ClickDragTest : MonoBehaviour
 {
-    public float snappingDistance = 10f;
+    public float snappingDistance = 100f;
     private Vector3 startPos;
     private GameObject snappedTo;
+    private GameObject startSnappedTo;
 
     private void OnMouseDown()
     {
         startPos = transform.position;
+        if (snappedTo == null) return;
+        startSnappedTo = snappedTo;
+        snappedTo = null;
     }
 
     void OnMouseDrag()
     {
         Vector2 cursorPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition); //getting cursor position
         transform.position = cursorPosition;
+        
+        var snaps = GameObject.FindObjectsOfType<SnappingPoint>().ToArray();
+        var rslt = GetDistanceToClosestSnappingPoint(snaps);
+        if (rslt.distance < snappingDistance)
+        {
+            Debug.DrawLine(transform.position, rslt.target.transform.position, Color.green, 0, false);
+            // this.transform.SetParent(snappedTo.transform);
+        }
     }
 
     private void Update()
@@ -30,12 +42,10 @@ public class ClickDragTest : MonoBehaviour
             var transFormComp = snappedTo.GetComponent<Transform>();
             this.GetComponent<Transform>().position = transFormComp.position;
         }
-        
     }
 
     private void OnMouseUp()
     {
-        
         SnappingPoint[] snaps = GameObject.FindObjectsOfType<SnappingPoint>();
         var rslt = GetDistanceToClosestSnappingPoint(snaps);
         PartComponent partComponent = GetComponent<PartComponent>();
@@ -43,13 +53,13 @@ public class ClickDragTest : MonoBehaviour
         {
             transform.position= rslt.target.transform.position;
             snappedTo = rslt.target.gameObject;
-           // this.transform.SetParent(snappedTo.transform);
+            // this.transform.SetParent(snappedTo.transform);
         }
         else
         {
             transform.position = startPos;
+            snappedTo = startSnappedTo;
         }
-
     }
 
     private (SnappingPoint target, float distance) GetDistanceToClosestSnappingPoint(SnappingPoint[] enemies)
