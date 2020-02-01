@@ -13,8 +13,9 @@ public class BeltManager : MonoBehaviour
     public float MaxScrollSpeed = 1.0f;
     public float CurrentMoveTime = 5.0f;
     public float MaxMoveTime = 5.0f;
-    public float ObjectXOffset = 1f;
     public float BeltLength = 50.0f;
+    public float Imagesize = 50.0f;
+    public float YOffset = 0.0f;
     public int ItemAmount = 5;
 
     int counter = 0;
@@ -22,7 +23,15 @@ public class BeltManager : MonoBehaviour
     float m_currentDist = 0.0f;
     float m_maxDist = 1.0f;
 
+    public GameObject BeltSnapObject;
+
     public List<GameObject> beltContentsList = new List<GameObject>();
+
+    public struct BeltObject
+    {
+        public GameObject obj;
+        public Part part;
+    }
 
     List<Part> m_partsQueue = new List<Part>();
     List<Part> m_partsList = new List<Part>();
@@ -33,16 +42,19 @@ public class BeltManager : MonoBehaviour
         m_maxDist = (BeltLength * 2) / ItemAmount;
         for (int i = 0; i < ItemAmount; i++)
         {
-
-            var gameobj = GameObject.Instantiate(Resources.Load("Prefabs/Zombie_Head_01")) as GameObject;
-            gameobj.GetComponent<Transform>().position -= new Vector3(BeltLength, ObjectXOffset, 0);
+            var part = PartGenerator.GeneratePart();
+            var partDetails = GuiHelpers.GetPartTypeDetails(part.Type);
+            var gameobj = GameObject.Instantiate(BeltSnapObject) as GameObject;
+           // gameobj.GetComponent<BodyPartVisual>().AssignPart(part);
+            gameobj.GetComponent<Transform>().position -= new Vector3(BeltLength, YOffset, 0);
             gameobj.GetComponent<Transform>().position += new Vector3(i * m_maxDist, 0,0);
+            m_partsList.Add(part);
             beltContentsList.Add(gameobj);
         }
 
-        for (int i = 0; i < ItemAmount; i++)
+        for (int i = 0; i < 50; i++)
         {
-            m_partsList.Add(PartGenerator.GeneratePart());
+            m_partsQueue.Add(PartGenerator.GeneratePart());
         }
     }
 
@@ -74,19 +86,19 @@ public class BeltManager : MonoBehaviour
 
     void i_moveItemsOnBelt()
     {
-        List<Transform> baseElementList = new List<Transform>();
-        foreach (var item in beltContentsList)
-            baseElementList.Add(item.GetComponent<Transform>());
-
         var moveAmount = 0.01f * ScrollSpeed;
 
         i_trackMovement(moveAmount);
 
-        foreach (var item in baseElementList)
+        foreach (var item in beltContentsList)
         {
-            item.position += new Vector3(moveAmount, 0, 0);
-            if (item.position.x > BeltLength)
-                item.position -= new Vector3(BeltLength * 2, 0, 0);
+            var tf = item.GetComponent<Transform>();
+
+            tf.position += new Vector3(moveAmount, 0, 0);
+            if (tf.position.x > BeltLength)
+                tf.position -= new Vector3(BeltLength * 2, 0);
+
+            tf.position = new Vector3(tf.position.x, YOffset);
         }
 
     }
@@ -104,33 +116,49 @@ public class BeltManager : MonoBehaviour
 
     private void MoveNext()
     {
-        if (m_partsList.Count > 0)
-        {
-            var lastitem = m_partsList.Last();
-            m_partsList.Remove(lastitem);
-        }
+        //for (int i = 0; i < beltContentsList.Count; i++)
+        //{
+        //    if (i < m_partsList.Count && i >= 0)
+        //    {
+        //        //var gameobj = beltContentsList[i].GetComponent<BodyPartVisual>();
+        //        //gameobj.AssignPart(m_partsList[i]);
 
-        if (m_partsQueue.Count > 0)
-        {
-            m_partsList.Reverse();
-            m_partsList.Add(m_partsQueue.First());
-            m_partsList.Reverse();
-        }
+        //    }
+        //}
 
-        for (int i = 0; i < beltContentsList.Count; i++)
-        {
-            if (i < m_partsList.Count && i >= 0)
-            {
-                SwitchTexture(m_partsList[i], beltContentsList[i]);
-            }
-        }
+        //var gameobj = beltContentsList[i].GetComponent<BodyPartVisual>();
+        var lastItem = beltContentsList.OrderByDescending(o => o.GetComponent<Transform>().position.x).FirstOrDefault();
+        if (lastItem == null)
+            return;
+
+        var snapComp = lastItem.GetComponent<SnappingPoint>();
+        if (snapComp.SnappedObject != null)
+            GameObject.Destroy(snapComp.SnappedObject);
+
+
+        // GameObject.Destroy(beltContentsList.Last());
+    }
+
+    private void RemoveLastItem()
+    {
+
     }
 
     private void SwitchTexture(Part part,GameObject obj)
     {
+
         var spriteRenderer = obj.GetComponent<SpriteRenderer>();
+        spriteRenderer.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+        spriteRenderer.transform.rotation = Quaternion.Euler(Vector3.forward);
+
+
         var partDetails = GuiHelpers.GetPartTypeDetails(part.Type);
-        spriteRenderer.sprite = Resources.Load<Sprite>(partDetails.AssetName);
+        var sprite = Resources.Load<Sprite>(partDetails.AssetName);
+        spriteRenderer.sprite = sprite;
+        var size = spriteRenderer.sprite.bounds.size;
+        spriteRenderer.transform.localScale = new Vector3(partDetails.SizeModifier, partDetails.SizeModifier, 1.0f);
+        spriteRenderer.transform.rotation = Quaternion.Euler(Vector3.forward * partDetails.RotationEuler);
+
     }
 
 }

@@ -4,16 +4,16 @@ namespace Logic
 {
     public class Body
     {
-        public List<Slot> Slots;
+        public List<SnappingPoint> Slots;
         public Stats BaseStats;
 
         public Body()
         {
             BaseStats = new Stats();
-            Slots = new List<Slot>();
+            Slots = new List<SnappingPoint>();
             for (int i = 0; i < 5; i++)
             {
-                Slots.Add(new Slot());
+                Slots.Add(new SnappingPoint());
             }
         }
 
@@ -24,7 +24,9 @@ namespace Logic
             {
                 if (slot.AssignedPart != null)
                 {
-                    counter += slot.AssignedPart.Stats;
+                    var comp = slot.AssignedPart.GetComponent<BodyPartVisual>();
+
+                    counter += comp.AssignedPart.Stats;
                 }
             }
 

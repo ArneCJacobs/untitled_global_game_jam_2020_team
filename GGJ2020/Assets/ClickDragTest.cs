@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Logic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -25,12 +26,11 @@ public class ClickDragTest : MonoBehaviour
         Vector2 cursorPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition); //getting cursor position
         transform.position = cursorPosition;
         
-        var snaps = GameObject.FindGameObjectsWithTag("snap").Select((o => o.transform)).ToArray();
+        var snaps = GameObject.FindObjectsOfType<SnappingPoint>().ToArray();
         var rslt = GetDistanceToClosestSnappingPoint(snaps);
         if (rslt.distance < snappingDistance)
         {
-            Debug.DrawLine(transform.position, rslt.target.position, Color.green, 0, false);
-            // this.transform.SetParent(snappedTo.transform);
+            Debug.DrawLine(transform.position, rslt.target.transform.position, Color.green, 0, false);
         }
     }
 
@@ -45,13 +45,19 @@ public class ClickDragTest : MonoBehaviour
 
     private void OnMouseUp()
     {
-        var snaps = GameObject.FindGameObjectsWithTag("snap").Select((o => o.transform)).ToArray();
+        SnappingPoint[] snaps = GameObject.FindObjectsOfType<SnappingPoint>();
         var rslt = GetDistanceToClosestSnappingPoint(snaps);
-        if (rslt.distance < snappingDistance)
+        if (rslt.distance< snappingDistance)
         {
-            transform.position = rslt.target.position;
+            SnappingPoint snappingPoint = snappedTo.GetComponent<SnappingPoint>();
+            if (snappingPoint != null)
+            {
+                snappingPoint.UnSnap();
+            }
+            
+            transform.position= rslt.target.transform.position;
             snappedTo = rslt.target.gameObject;
-            // this.transform.SetParent(snappedTo.transform);
+            this.transform.SetParent(snappedTo.transform);
         }
         else
         {
@@ -60,16 +66,17 @@ public class ClickDragTest : MonoBehaviour
         }
     }
 
-    private (Transform target, float distance) GetDistanceToClosestSnappingPoint(Transform[] enemies)
+    private (SnappingPoint target, float distance) GetDistanceToClosestSnappingPoint(SnappingPoint[] enemies)
     {
-        Transform bestTarget = null;
+        PartComponent partComponent = GetComponent<PartComponent>();
+        SnappingPoint bestTarget = null;
         float closestDistanceSqr = Mathf.Infinity;
         Vector3 currentPosition = transform.position;
-        foreach (Transform potentialTarget in enemies)
+        foreach (SnappingPoint potentialTarget in enemies)
         {
-            Vector3 directionToTarget = potentialTarget.position - currentPosition;
+            Vector3 directionToTarget = potentialTarget.transform.position - currentPosition;
             float dSqrToTarget = directionToTarget.sqrMagnitude;
-            if (dSqrToTarget < closestDistanceSqr)
+            if (dSqrToTarget < closestDistanceSqr && (partComponent == null || potentialTarget.CanSnap(gameObject)))
             {
                 closestDistanceSqr = dSqrToTarget;
                 bestTarget = potentialTarget;
