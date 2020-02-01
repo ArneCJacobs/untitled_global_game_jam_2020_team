@@ -24,7 +24,9 @@ namespace Logic
             {
                 if (slot.AssignedPart != null)
                 {
-                    counter += slot.AssignedPart.Stats;
+                    var comp = slot.AssignedPart.GetComponent<BodyPartVisual>();
+
+                    counter += comp.AssignedPart.Stats;
                 }
             }
 
