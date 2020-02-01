@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 
 namespace Logic
 {
@@ -21,16 +22,15 @@ namespace Logic
 
         protected static void DamageRandomParts(Party party, float avrDamage)
         {
-            Random random = new Random();
-            foreach (Body body in party.Bodies)
+            var random = new Random();
+            foreach (var body in party.Bodies)
             {
-                foreach (Slot slot in body.Slots)
+                foreach (var part in from slot in body.Slots
+                    where slot.AssignedPart != null
+                    where random.NextDouble() > 0.5
+                    select slot.AssignedPart)
                 {
-                    if (random.NextDouble() > 0.5)
-                    {
-                        Part part = slot.AssignedPart;
-                        part.Stats.Durability -= (float) random.NextDouble() * avrDamage;
-                    }
+                    part.Stats.Durability -= (float) random.NextDouble() * avrDamage;
                 }
             }
         }
