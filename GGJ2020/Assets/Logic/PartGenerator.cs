@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using UnityEngine;
 using Random = System.Random;
 
 namespace Logic
@@ -59,15 +60,7 @@ namespace Logic
             Part part = new Part();
             part.Type = type;
             part.Stats = GenerateStats();
-            var t = part.Stats.GetType();
-            foreach (PropertyInfo info in t.GetProperties())
-            {
-                if (info.CanWrite)
-                {
-                    info.SetValue(part.Stats, (float)info.GetValue(part.Stats) * rarityModifiers[rarity] );
-                }
-            }
-
+            part.Stats *= rarityModifiers[rarity];
             part.Name = rarity.ToString() + " " + type.ToString();
             return part;
 
