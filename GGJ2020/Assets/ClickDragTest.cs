@@ -10,10 +10,14 @@ public class ClickDragTest : MonoBehaviour
     public float snappingDistance = 10f;
     private Vector3 startPos;
     private GameObject snappedTo;
+    private GameObject startSnappedTo;
 
     private void OnMouseDown()
     {
         startPos = transform.position;
+        if (snappedTo == null) return;
+        startSnappedTo = snappedTo;
+        snappedTo = null;
     }
 
     void OnMouseDrag()
@@ -29,25 +33,23 @@ public class ClickDragTest : MonoBehaviour
             var transFormComp = snappedTo.GetComponent<Transform>();
             this.GetComponent<Transform>().position = transFormComp.position;
         }
-        
     }
 
     private void OnMouseUp()
     {
-        
-        var snaps = GameObject.FindGameObjectsWithTag("snap").Select((o =>o.transform)).ToArray();
+        var snaps = GameObject.FindGameObjectsWithTag("snap").Select((o => o.transform)).ToArray();
         var rslt = GetDistanceToClosestSnappingPoint(snaps);
-        if (rslt.distance< snappingDistance)
+        if (rslt.distance < snappingDistance)
         {
-            transform.position= rslt.target.position;
+            transform.position = rslt.target.position;
             snappedTo = rslt.target.gameObject;
-           // this.transform.SetParent(snappedTo.transform);
+            // this.transform.SetParent(snappedTo.transform);
         }
         else
         {
             transform.position = startPos;
+            snappedTo = startSnappedTo;
         }
-
     }
 
     private (Transform target, float distance) GetDistanceToClosestSnappingPoint(Transform[] enemies)
