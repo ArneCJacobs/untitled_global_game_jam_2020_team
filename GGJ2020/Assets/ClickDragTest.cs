@@ -47,8 +47,7 @@ public class ClickDragTest : MonoBehaviour
     {
         SnappingPoint[] snaps = GameObject.FindObjectsOfType<SnappingPoint>();
         var rslt = GetDistanceToClosestSnappingPoint(snaps);
-        PartComponent partComponent = GetComponent<PartComponent>();
-        if (rslt.distance< snappingDistance && (partComponent == null || rslt.target.CanSnap(gameObject)))
+        if (rslt.distance< snappingDistance)
         {
             transform.position= rslt.target.transform.position;
             snappedTo = rslt.target.gameObject;
@@ -63,6 +62,7 @@ public class ClickDragTest : MonoBehaviour
 
     private (SnappingPoint target, float distance) GetDistanceToClosestSnappingPoint(SnappingPoint[] enemies)
     {
+        PartComponent partComponent = GetComponent<PartComponent>();
         SnappingPoint bestTarget = null;
         float closestDistanceSqr = Mathf.Infinity;
         Vector3 currentPosition = transform.position;
@@ -70,7 +70,7 @@ public class ClickDragTest : MonoBehaviour
         {
             Vector3 directionToTarget = potentialTarget.transform.position - currentPosition;
             float dSqrToTarget = directionToTarget.sqrMagnitude;
-            if (dSqrToTarget < closestDistanceSqr)
+            if (dSqrToTarget < closestDistanceSqr && (partComponent == null || potentialTarget.CanSnap(gameObject)))
             {
                 closestDistanceSqr = dSqrToTarget;
                 bestTarget = potentialTarget;
