@@ -49,14 +49,16 @@ public class ClickDragTest : MonoBehaviour
         var rslt = GetDistanceToClosestSnappingPoint(snaps);
         if (rslt.distance< snappingDistance)
         {
-            SnappingPoint snappingPoint = snappedTo.GetComponent<SnappingPoint>();
-            if (snappingPoint != null)
-            {
-                snappingPoint.UnSnap();
-            }
+
             
             transform.position= rslt.target.transform.position;
             snappedTo = rslt.target.gameObject;
+            SnappingPoint snappingPoint = snappedTo.GetComponent<SnappingPoint>();
+            if (snappingPoint != null)
+                snappingPoint.UnSnap();
+
+            snappingPoint.AssignGameObject(gameObject);
+
             this.transform.SetParent(snappedTo.transform);
         }
         else
