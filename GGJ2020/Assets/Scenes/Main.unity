@@ -2486,7 +2486,8 @@ MonoBehaviour:
   MaxMoveTime: 50
   ObjectXOffset: 2
   BeltLength: 10
-  ItemAmount: 8
+  Imagesize: 50
+  ItemAmount: 6
   beltContentsList: []
 --- !u!1 &1329958005
 GameObject:
