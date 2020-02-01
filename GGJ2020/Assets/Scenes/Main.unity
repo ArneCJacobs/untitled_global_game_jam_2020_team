@@ -769,6 +769,11 @@ PrefabInstance:
       propertyPath: ItemAmount
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 1125438441559865167, guid: 3a4dbdba76e7d5745af0ec8dc6b9cf6e,
+        type: 3}
+      propertyPath: MaxMoveTime
+      value: 500
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3a4dbdba76e7d5745af0ec8dc6b9cf6e, type: 3}
 --- !u!1001 &1244310811310355350
@@ -789,6 +794,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8988420037047728125, guid: 641ff651f0e229048971fac8f1dd974c,
         type: 3}
+    - target: {fileID: 6756819742785269541, guid: bb7086148d722994ba83678a78ccfbd6,
+        type: 3}
+      propertyPath: MaxMoveTime
+      value: 500
+      objectReference: {fileID: 0}
     - target: {fileID: 6756819742785269542, guid: bb7086148d722994ba83678a78ccfbd6,
         type: 3}
       propertyPath: m_LocalPosition.x

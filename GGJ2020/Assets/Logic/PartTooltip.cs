@@ -21,7 +21,7 @@ public class PartTooltip : SimpleTooltip
         {
             BodyPartVisual bodyPartVisual = gameObject.GetComponent<BodyPartVisual>();
             Part part;
-            if (bodyPartVisual == null)
+            if (bodyPartVisual == null || bodyPartVisual.AssignedPart == null || bodyPartVisual.AssignedPart.Stats == null)
                 return;
 
             part = bodyPartVisual.AssignedPart;

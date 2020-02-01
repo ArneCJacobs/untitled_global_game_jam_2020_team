@@ -126,8 +126,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed5efc5d25486b95aa610fb2c8b39c13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsTypeRestricted: 0
-  AcceptedTypes: 
+  IsTypeRestricted: 1
+  AcceptedTypes: 00000000
   AssignedPart: {fileID: 0}
   IsBody: 0
 --- !u!212 &3205312382060028246

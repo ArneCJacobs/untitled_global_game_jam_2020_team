@@ -10,8 +10,8 @@ public class ClickDragTest : MonoBehaviour
 {
     public float snappingDistance = 100f;
     private Vector3 startPos;
-    private GameObject snappedTo;
-    private GameObject startSnappedTo;
+    public GameObject snappedTo;
+    public GameObject startSnappedTo;
 
     private void OnMouseDown()
     {
@@ -29,10 +29,6 @@ public class ClickDragTest : MonoBehaviour
         var snaps = GameObject.FindObjectsOfType<SnappingPoint>().ToArray();
         var snapsInChildren = GetComponentsInChildren<SnappingPoint>();
         var rslt = GetDistanceToClosestSnappingPoint(snaps.Where(o => !snapsInChildren.Contains(o)).ToArray());
-        if (rslt.distance < snappingDistance)
-        {
-            Debug.DrawLine(transform.position, rslt.target.transform.position, Color.green, 0, false);
-        }
     }
 
     private void Update()
@@ -49,8 +45,15 @@ public class ClickDragTest : MonoBehaviour
         SnappingPoint[] snaps = GameObject.FindObjectsOfType<SnappingPoint>();
         var rslt = GetDistanceToClosestSnappingPoint(snaps);
         if (rslt.distance< snappingDistance)
-        {           
+        {
+            Debug.DrawLine(transform.position, rslt.target.transform.position, Color.green, 0, false);
+
             transform.position= rslt.target.transform.position;
+
+            SnappingPoint prevsnappingPoint = null;
+            if (snappedTo != null)
+                prevsnappingPoint = snappedTo.GetComponent<SnappingPoint>();
+
 
             snappedTo = rslt.target.gameObject;
 
@@ -58,7 +61,8 @@ public class ClickDragTest : MonoBehaviour
 
             if (snappingPoint != null)
             {
-                snappingPoint.UnSnap();
+                if (prevsnappingPoint != null)
+                    prevsnappingPoint.UnSnap();
 
                 snappingPoint.AssignGameObject(gameObject);
 
@@ -80,7 +84,7 @@ public class ClickDragTest : MonoBehaviour
 
     private (SnappingPoint target, float distance) GetDistanceToClosestSnappingPoint(SnappingPoint[] enemies)
     {
-        BodyPartVisual partComponent = GetComponent<BodyPartVisual>();
+        //BodyPartVisual partComponent = GetComponent<BodyPartVisual>();
         SnappingPoint bestTarget = null;
         float closestDistanceSqr = Mathf.Infinity;
         Vector3 currentPosition = transform.position;
@@ -88,7 +92,7 @@ public class ClickDragTest : MonoBehaviour
         {
             Vector3 directionToTarget = potentialTarget.transform.position - currentPosition;
             float dSqrToTarget = directionToTarget.sqrMagnitude;
-            if (dSqrToTarget < closestDistanceSqr && (partComponent == null || potentialTarget.CanSnap(gameObject)))
+            if (dSqrToTarget < closestDistanceSqr && potentialTarget.CanSnap(gameObject))
             {
                 
                 closestDistanceSqr = dSqrToTarget;
