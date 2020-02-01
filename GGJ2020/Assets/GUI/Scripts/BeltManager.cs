@@ -19,11 +19,13 @@ public class BeltManager : MonoBehaviour
     public int ItemAmount = 5;
 
     float m_frameTimer = 0.0f;
-    float m_maxFrameTimer = 0.05f;
-    public int MaxFramesPerBeltSection = 20;
+    float m_maxFrameTimer = 1.0f / 60.0f;
+    public int MaxFramesPerBeltSection = 60;
     public bool BodiesOnly= true;
 
     private int m_currentFrameCounter = 0;
+
+    double m_dt;
 
 
     public GameObject BeltSnapObject;
@@ -54,34 +56,52 @@ public class BeltManager : MonoBehaviour
     {
 
         if (m_frameTimer > 0)
+        {
             m_frameTimer -= Time.deltaTime;
+            m_dt += Time.deltaTime;
+        }
         else
         {
             m_frameTimer = m_maxFrameTimer;
-            AdvanceFrame();
+            AdvanceFrame(m_dt);
+            m_dt = 0.0f;
+
         }
+
+        UpdateMovement(m_dt);
     }
 
-    public void AdvanceFrame()
+    public void AdvanceFrame(double dt)
     {
+       
+        i_advanceFrameTimer(dt);
+    }
+
+    public static float Damp(float source, float target, float smoothing, float dt)
+    {
+        return Mathf.Lerp(source, target, 1 - Mathf.Pow(smoothing, dt));
+    }
+
+    private void UpdateMovement(double dt)
+    {
+        
         for (int i = 0; i < ItemAmount; i++)
         {
             var item = BeltSlots[i];
             var perc = (float)m_currentFrameCounter / (float)MaxFramesPerBeltSection;
             var sectionLength = BeltLength / ItemAmount;
+
+            //sectionLength * m_dt;
+
             var lerpVal = UnityEngine.Mathf.Lerp((item.index * sectionLength) - (BeltLength / 2), (item.index + 1) * sectionLength - (BeltLength / 2), perc);
             item.obj.transform.position = new Vector3(lerpVal, 0.0f, 0.0f);
             var ob = BeltSlots.Select(o => o.obj).FirstOrDefault();
             if (ob != null)
                 Debug.Log(ob.transform.position);
         }
-
-
-        
-        i_advanceFrameTimer();
     }
 
-    private void i_advanceFrameTimer()
+    private void i_advanceFrameTimer(double dt)
     {
         if (m_currentFrameCounter > MaxFramesPerBeltSection)
         {
