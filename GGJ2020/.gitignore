@@ -62,3 +62,7 @@ sysinfo.txt
 crashlytics-build.properties
 .vscode
 .idea
+/Assets/ArneTestScript.cs
+/Assets/Scenes/ArneTestScene.unity.meta
+/Assets/Scenes/ArneTestScene.unity
+/Assets/ArneTestScript.cs.meta
