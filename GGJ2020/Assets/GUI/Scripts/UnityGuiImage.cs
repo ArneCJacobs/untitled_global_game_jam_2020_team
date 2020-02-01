@@ -10,6 +10,8 @@ namespace Game.GUI
         GuiBaseElement m_img = new GuiBaseElement();
         Image Image { get; set; }
 
+        public int X;
+        public int Y;
         public int Width;
         public int Height;
 
@@ -28,6 +30,8 @@ namespace Game.GUI
 
         private void UpdateSizeAndPosition()
         {
+            m_img.Rect.X = X;
+            m_img.Rect.Y = Y;
             m_img.Rect.Width = Width;
             m_img.Rect.Height = Height;
             m_img.Update();
