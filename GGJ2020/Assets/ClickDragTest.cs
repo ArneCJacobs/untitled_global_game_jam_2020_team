@@ -70,7 +70,7 @@ public class ClickDragTest : MonoBehaviour
 
     private (SnappingPoint target, float distance) GetDistanceToClosestSnappingPoint(SnappingPoint[] enemies)
     {
-        PartComponent partComponent = GetComponent<PartComponent>();
+        BodyPartVisual partComponent = GetComponent<BodyPartVisual>();
         SnappingPoint bestTarget = null;
         float closestDistanceSqr = Mathf.Infinity;
         Vector3 currentPosition = transform.position;
