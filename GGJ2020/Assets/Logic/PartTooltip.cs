@@ -19,16 +19,19 @@ public class PartTooltip : SimpleTooltip
     {
         if (!initialized)
         {
-            initialized = true;
             BodyPartVisual bodyPartVisual = gameObject.GetComponent<BodyPartVisual>();
             Part part;
             if (bodyPartVisual == null)
                 return;
 
             part = bodyPartVisual.AssignedPart;
+            if (part == null || part.Stats == null)
+                return;
+            
             StringBuilder sb = new StringBuilder();
             infoRight = "`" + part.Name.ToLower();
 
+            initialized = true;
             sb.Append("Speed: " + (int) part.Stats.Speed + "\n");
             sb.Append("Vitality: " + (int) part.Stats.Vitality + "\n");
             sb.Append("Intelligence: " + (int) part.Stats.Intelligence + "\n");

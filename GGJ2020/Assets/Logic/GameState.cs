@@ -25,11 +25,16 @@ public class GameState : MonoBehaviour
 
     private int _difficultyDelta = 2;
 
+    public void Start()
+    {
+        Restart();
+    }
+
     public void Update()
     {
         if (QuestEndTime < Time.time)
         {
-            LastQuestResult = CurrentQuest.GetResult(Party);
+            LastQuestResult = CurrentQuest?.GetResult(Party);
             CurrentQuest = _questGenerator.GenerateQuest(Difficulty);
             QuestEndTime = Time.time + CurrentQuest.MaxDuration;
             Difficulty += _difficultyDelta;
