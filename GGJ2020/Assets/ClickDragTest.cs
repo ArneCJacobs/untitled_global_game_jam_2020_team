@@ -9,6 +9,7 @@ public class ClickDragTest : MonoBehaviour
 {
     public float snappingDistance = 10f;
     private Vector3 startPos;
+    private GameObject snappedTo;
 
     private void OnMouseDown()
     {
@@ -21,6 +22,16 @@ public class ClickDragTest : MonoBehaviour
         transform.position = cursorPosition;
     }
 
+    private void Update()
+    {
+        if (snappedTo != null)
+        {
+            var transFormComp = snappedTo.GetComponent<Transform>();
+            this.GetComponent<Transform>().position = transFormComp.position;
+        }
+        
+    }
+
     private void OnMouseUp()
     {
         
@@ -29,6 +40,8 @@ public class ClickDragTest : MonoBehaviour
         if (rslt.distance< snappingDistance)
         {
             transform.position= rslt.target.position;
+            snappedTo = rslt.target.gameObject;
+            this.transform.SetParent(snappedTo.transform);
         }
         else
         {
