@@ -15,7 +15,7 @@ public class QuestResultBox : MonoBehaviour
     {
         goldReward = transform.Find("GoldReward").gameObject;
         questOutcome = transform.Find("QuestOutcome").gameObject;
-        loot = transform.Find("Loot").gameObject;
+        loot = transform.Find("ScrollView/Viewport/Loot").gameObject;
     }
 
     public void Display(QuestResult qr)

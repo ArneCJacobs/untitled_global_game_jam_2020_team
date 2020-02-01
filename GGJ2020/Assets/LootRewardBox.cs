@@ -17,20 +17,18 @@ public class LootRewardBox : MonoBehaviour
     public void Display(List<Part> loot)
     {
         this.parts = loot;
-        for (var i = 0; i < parts.Count; i++)
+        foreach (var part in parts)
         {
             var partVisual = new GameObject();
             partVisual.transform.parent = transform;
 
-            var sr = partVisual.AddComponent<SpriteRenderer>();
-            sr.sortingLayerName = "back";
-            var partImg = partVisual.AddComponent<BodyPartVisual>();
+            var cr = partVisual.AddComponent<CanvasRenderer>();
             var rect = partVisual.AddComponent<RectTransform>();
-
-            partImg.transform.localScale = new Vector3(5, 5, 1);
-            var grid = transform.GetComponent<GridLayout>();
-            
-            // partImg.transform.position = transform.GetComponent<GridLayout>().CellToLocal(new Vector3Int(i, 0, 0));
+            var img = partVisual.AddComponent<Image>();
+            var partDetails = GuiHelpers.GetPartTypeDetails(part.Type);
+            img.sprite = Resources.Load<Sprite>(partDetails.AssetName);
+            img.transform.localScale = new Vector3(partDetails.SizeModifier, partDetails.SizeModifier, 1.0f);
+            img.transform.rotation = Quaternion.Euler(Vector3.forward * partDetails.RotationEuler);
         }
     }
 
