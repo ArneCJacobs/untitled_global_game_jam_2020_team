@@ -1,5 +1,4 @@
-﻿using Game.GUI;
-using Logic;
+﻿using Logic;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -66,10 +65,10 @@ public class BeltManager : MonoBehaviour
             var sectionLength = BeltLength / ItemAmount;
 
             LerpValue = Mathf.Lerp((item.index * sectionLength) - (BeltLength / 2), (item.index + 1) * sectionLength - (BeltLength / 2), BeltTimer);
-            item.obj.transform.position = new Vector3(LerpValue, YOffset, 0.0f);
+            var snappingPart = item.obj.GetComponent<SnappingPoint>();       
+
+            item.obj.transform.position = new Vector3(LerpValue, YOffset);
             var ob = BeltSlots.Select(o => o.obj).FirstOrDefault();
-            if (ob != null)
-                Debug.Log(ob.transform.position);
         }
     }
 
@@ -106,8 +105,6 @@ public class BeltManager : MonoBehaviour
 
     public void RemoveItemFromQueue()
     {
-        Debug.Log("removed item");
-
         var toRemoveItem = BeltSlots.FirstOrDefault(x => x.index == m_beltSlotCount);
 
         var snapComp = toRemoveItem.obj.GetComponent<SnappingPoint>();

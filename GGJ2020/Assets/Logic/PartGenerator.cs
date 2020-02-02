@@ -1,3 +1,4 @@
+using Game.GUI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,13 +36,15 @@ namespace Logic
 
             if (!type.HasValue)
             {
-                int maxValue = (int)Enum.GetValues(typeof(PartType)).Cast<PartType>().Max();
-                newPart.Type = (PartType)rnd.Next(1, maxValue + 1);
+                int maxValue = (int)Enum.GetValues(typeof(VisualPartType)).Cast<VisualPartType>().Max();
+                newPart.VisualType = (VisualPartType)rnd.Next(2, maxValue + 1);
             }
             else
-                newPart.Type = type.Value;
+                newPart.VisualType = GuiHelpers.GetRandomPartyForCategory(type.Value);
+
+
             newPart.Description = "test description"; //TODO
-            newPart.Name = newPart.Type.ToString(); //TODO
+            newPart.Name = newPart.VisualType.ToString(); //TODO
             GenerateStats();
 
             return newPart;
@@ -65,18 +68,21 @@ namespace Logic
         {
             Part newPart = new Part();
 
-            int maxValue = (int) Enum.GetValues(typeof(PartType)).Cast<PartType>().Max();
-            newPart.Type = (PartType) rnd.Next(1, maxValue + 1);
+            int maxValue = (int) Enum.GetValues(typeof(VisualPartType)).Cast<VisualPartType>().Max();
+
+            newPart.VisualType = (VisualPartType) rnd.Next(2, maxValue + 1);
+            newPart.Type = GuiHelpers.GetPartTypeDetails(newPart.VisualType).Type;
             newPart.Description = "test description"; //TODO
             newPart.Name = newPart.Type.ToString(); //TODO
             newPart.Stats = GenerateStats();
             return newPart;
         }
 
-        public static Part GeneratePart(Rarity rarity, PartType type)
+        public static Part GeneratePart(Rarity rarity, VisualPartType type)
         {
+            var typedets = GuiHelpers.GetPartTypeDetails(type);
             Part part = new Part();
-            part.Type = type;
+            part.Type = typedets.Type;
             part.Stats = GenerateStats();
             part.Stats *= rarityModifiers[rarity];
             part.Name = rarity.ToString() + " " + type.ToString();
