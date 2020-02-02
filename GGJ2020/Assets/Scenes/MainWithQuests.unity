@@ -799,7 +799,7 @@ PrefabInstance:
     - target: {fileID: 6756819742785269541, guid: bb7086148d722994ba83678a78ccfbd6,
         type: 3}
       propertyPath: BeltSnapObjectAdditions.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6756819742785269541, guid: bb7086148d722994ba83678a78ccfbd6,
         type: 3}
@@ -835,6 +835,22 @@ PrefabInstance:
       propertyPath: YOffset
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 6756819742785269541, guid: bb7086148d722994ba83678a78ccfbd6,
+        type: 3}
+      propertyPath: ControlledByPlayer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6756819742785269541, guid: bb7086148d722994ba83678a78ccfbd6,
+        type: 3}
+      propertyPath: ItemAmount
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6756819742785269541, guid: bb7086148d722994ba83678a78ccfbd6,
+        type: 3}
+      propertyPath: BeltSnapObjectAdditions.Array.data[2]
+      value: 
+      objectReference: {fileID: 4905086608271219905, guid: 802a47fa305ccdd4ca7bfa5b869a1a92,
+        type: 3}
     - target: {fileID: 6756819742785269542, guid: bb7086148d722994ba83678a78ccfbd6,
         type: 3}
       propertyPath: m_LocalPosition.x

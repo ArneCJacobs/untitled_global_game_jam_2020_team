@@ -33,7 +33,6 @@ namespace Logic
             {Rarity.LEGENDARY, 2.3f}
         };
 
-
         private static
             Dictionary<PartType, (float speed, float vitality, float intelligence, float strength, float dexterity,
                 float charisma, float durability)> statModifiersPerType =
@@ -82,8 +81,9 @@ namespace Logic
 
             if (!type.HasValue)
             {
-                int maxValue = (int) Enum.GetValues(typeof(VisualPartType)).Cast<VisualPartType>().Max();
-                newPart.VisualType = (VisualPartType) rnd.Next(2, maxValue + 1);
+                int maxValue = (int)Enum.GetValues(typeof(VisualPartType)).Cast<VisualPartType>().Max();
+                newPart.VisualType = (VisualPartType)rnd.Next(3, maxValue + 1);
+
             }
             else if (type.HasValue && !visualPartType.HasValue)
                 newPart.VisualType = GuiHelpers.GetRandomPartForCategory(type.Value);
@@ -95,8 +95,6 @@ namespace Logic
                 }
             }
 
-            PartFactoryType factoryType = GuiHelpers.GetPartTypeDetails(newPart.VisualType);
-            newPart.Type = factoryType.Type;
             newPart.Description = "test description"; //TODO
             newPart.Stats = GenerateStats(newPart.Type);
             newPart.Name = GenerateName(newPart);

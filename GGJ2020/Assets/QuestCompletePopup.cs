@@ -40,6 +40,7 @@ public class QuestCompletePopup : MonoBehaviour
 
     public void OnContinueButtonClick()
     {
+        SFXEventHandler.SendButtonClick();
         gameState.Play();
         GetComponent<Canvas>().enabled = false;
     }
