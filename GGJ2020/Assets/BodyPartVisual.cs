@@ -12,6 +12,11 @@ public class BodyPartVisual : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
+    }
+
+    public void generateBodyPartVisual()
+    {
         if (PartTypeOverride != PartType.TORSO)
             AssignPart(PartGenerator.GeneratePart());
         else
@@ -41,10 +46,8 @@ public class BodyPartVisual : MonoBehaviour
         var partDetails = GuiHelpers.GetPartTypeDetails(AssignedPart.VisualType);
         var sprite = Resources.Load<Sprite>(AttachedToBody ? partDetails.AssetName : partDetails.BeltAssetName);
         spriteRenderer.sprite = sprite;
-        //var size = spriteRenderer.sprite.bounds.size;
         Vector3 parentScale = Vector3.one;
-        //if (gameObject.transform.parent)
-        //    parentScale = gameObject.transform.parent.localScale;
+
         if (tf != null)
             spriteRenderer.transform.localScale = new Vector3(!AttachedToBody ? partDetails.SizeModifier * tf.localScale.x : 0.3f, !AttachedToBody ? partDetails.SizeModifier * tf.localScale.y : 0.3f, 1.0f);
         else

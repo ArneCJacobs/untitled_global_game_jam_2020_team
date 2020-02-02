@@ -30,7 +30,7 @@ namespace Logic
             return (float) (randNormal * 100);
         }
 
-        public static Part GeneratePart(PartType? type = null)
+        public static Part GeneratePart(PartType? type = null, VisualPartType? visualPartType = null)
         {
             Part newPart = new Part();
 
@@ -38,10 +38,18 @@ namespace Logic
             {
                 int maxValue = (int)Enum.GetValues(typeof(VisualPartType)).Cast<VisualPartType>().Max();
                 newPart.VisualType = (VisualPartType)rnd.Next(2, maxValue + 1);
-            }
-            else
-                newPart.VisualType = GuiHelpers.GetRandomPartyForCategory(type.Value);
 
+
+            }
+            else if (type.HasValue && !visualPartType.HasValue)
+                newPart.VisualType = GuiHelpers.GetRandomPartForCategory(type.Value);
+            else
+            {
+                if (visualPartType.HasValue)
+                {
+                    newPart.VisualType = visualPartType.Value;
+                }
+            }
 
             newPart.Description = "test description"; //TODO
             newPart.Name = newPart.VisualType.ToString(); //TODO

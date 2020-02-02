@@ -24,7 +24,7 @@ public class BeltManager : MonoBehaviour
     public bool BodiesOnly = true;
 
     public GameObject BeltSnapObject;
-    public GameObject BeltSnapObjectAddition;
+    public List<GameObject> BeltSnapObjectAdditions;
 
     public List<(GameObject obj, int index)> BeltSlots = new List<(GameObject obj, int index)>();
     int m_beltSlotCount = 1;
@@ -114,8 +114,9 @@ public class BeltManager : MonoBehaviour
 
     public void AddItemToQueue(Part part)
     {
-        var instObj = GameObject.Instantiate(BeltSnapObjectAddition);
-
+        var rand = new System.Random();
+        GameObject instObj = null;
+        instObj = GameObject.Instantiate(BeltSnapObjectAdditions[rand.Next(0, BeltSnapObjectAdditions.Count)]);
         var beltObj = GameObject.Instantiate(BeltSnapObject);
         BeltSlots.Add((beltObj, 0));
 
@@ -125,6 +126,21 @@ public class BeltManager : MonoBehaviour
         comp.snappedTo = beltObj;
         comp.startSnappedTo = beltObj;
         var bodVs = instObj.GetComponent<BodyPartVisual>();
+
+        if (BeltSnapObjectAdditions.Count > 1)
+        {
+            if (instObj.transform.name.Contains("BodyHuman"))
+            {
+                bodVs.AssignPart(PartGenerator.GeneratePart(PartType.TORSO, VisualPartType.HUMAN_TORSO));
+            }
+            else if (instObj.transform.name.Contains("BodyZombie"))
+            {
+                bodVs.AssignPart(PartGenerator.GeneratePart(PartType.TORSO, VisualPartType.ZOMBIE_TORSO));
+            }
+        }
+        else
+            bodVs.generateBodyPartVisual();
+
         snapComp.AssignGameObject(instObj);
 
         bodVs.ResetRotationsAndTranslations(false, beltObj.transform);
