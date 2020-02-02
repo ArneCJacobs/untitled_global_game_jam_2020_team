@@ -103,7 +103,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c24b1ff6203a10e989c97ae99a8e8597, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  snappingDistance: 100
+  snappingDistance: 1
   snappedTo: {fileID: 0}
   startSnappedTo: {fileID: 0}
 --- !u!60 &4905086608271219917

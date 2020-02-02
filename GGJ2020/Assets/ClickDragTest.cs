@@ -12,12 +12,15 @@ public class ClickDragTest : MonoBehaviour
     private Vector3 startPos;
     public GameObject snappedTo;
     public GameObject startSnappedTo;
+    private SnappingPoint prevsnappingPoint;
 
     private void OnMouseDown()
     {
         startPos = transform.position;
         if (snappedTo == null) return;
         startSnappedTo = snappedTo;
+        prevsnappingPoint = snappedTo.GetComponent<SnappingPoint>();
+        prevsnappingPoint.UnSnap();
         snappedTo = null;
     }
 
@@ -50,7 +53,7 @@ public class ClickDragTest : MonoBehaviour
 
             transform.position= rslt.target.transform.position;
 
-            SnappingPoint prevsnappingPoint = null;
+            prevsnappingPoint = null;
             if (snappedTo != null)
                 prevsnappingPoint = snappedTo.GetComponent<SnappingPoint>();
 

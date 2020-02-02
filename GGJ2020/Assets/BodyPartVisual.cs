@@ -46,9 +46,9 @@ public class BodyPartVisual : MonoBehaviour
         //if (gameObject.transform.parent)
         //    parentScale = gameObject.transform.parent.localScale;
         if (tf != null)
-            spriteRenderer.transform.localScale = new Vector3(partDetails.SizeModifier * tf.localScale.x, partDetails.SizeModifier * tf.localScale.y, 1.0f);
+            spriteRenderer.transform.localScale = new Vector3(!AttachedToBody ? partDetails.SizeModifier * tf.localScale.x : 0.3f, !AttachedToBody ? partDetails.SizeModifier * tf.localScale.y : 0.3f, 1.0f);
         else
-            spriteRenderer.transform.localScale = new Vector3(partDetails.SizeModifier, partDetails.SizeModifier, 1.0f);
+            spriteRenderer.transform.localScale = new Vector3(!AttachedToBody ? partDetails.SizeModifier : 0.3f, !AttachedToBody ? partDetails.SizeModifier : 0.3f, 1.0f);
 
         Destroy(GetComponent<PolygonCollider2D>());
         gameObject.AddComponent<PolygonCollider2D>();

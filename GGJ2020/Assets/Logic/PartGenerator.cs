@@ -66,7 +66,7 @@ namespace Logic
             Part newPart = new Part();
 
             int maxValue = (int) Enum.GetValues(typeof(PartType)).Cast<PartType>().Max();
-            newPart.Type = (PartType) rnd.Next(maxValue + 1);
+            newPart.Type = (PartType) rnd.Next(1, maxValue + 1);
             newPart.Description = "test description"; //TODO
             newPart.Name = newPart.Type.ToString(); //TODO
             newPart.Stats = GenerateStats();
