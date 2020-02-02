@@ -5,12 +5,12 @@ using Logic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class QuestCompletePopup : MonoBehaviour
+public class QuestStartPopup : MonoBehaviour
 {
     private GameObject questTitle;
     private GameObject questDescription;
-    private GameObject questResults;
     private GameState gameState;
+    private GameObject questHints;
 
     // Start is called before the first frame update
     void Start()
@@ -18,24 +18,22 @@ public class QuestCompletePopup : MonoBehaviour
         GetComponent<Canvas>().enabled = false;
         questTitle = transform.Find("QuestTitle").gameObject;
         questDescription = transform.Find("QuestDescription").gameObject;
-        questResults = transform.Find("QuestResults").gameObject;
         gameState = GameObject.Find("/GameState").gameObject.GetComponent<GameState>();
-        QuestEventManager.QuestFinishedEvent += DisplayQuest;
+        QuestEventManager.QuestStartedEvent += DisplayQuest;
     }
-
 
     private void OnDisable()
     {
-        QuestEventManager.QuestFinishedEvent -= DisplayQuest;
+        QuestEventManager.QuestStartedEvent -= DisplayQuest;
     }
 
-    private void DisplayQuest(Quest quest, QuestResult result)
+    public void DisplayQuest(Quest quest)
     {
         gameState.Pause();
         GetComponent<Canvas>().enabled = true;
         questTitle.GetComponent<Text>().text = quest.Title;
         questDescription.GetComponent<Text>().text = quest.Description;
-        questResults.GetComponent<QuestResultBox>().Display(result);
+        questHints.GetComponent<Text>().text = quest.Hints;
     }
 
     public void OnContinueButtonClick()

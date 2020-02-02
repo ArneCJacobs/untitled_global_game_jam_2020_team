@@ -12,6 +12,8 @@ namespace Logic.Quests
             var sb = new StringBuilder();
             sb.Append("Attack a nearby settlement for new body parts.");
             Description = sb.ToString();
+            Hints = @"- Villagers work in groups and are quite clever
+- If you are not fast enough, they might call in help.";
         }
 
 

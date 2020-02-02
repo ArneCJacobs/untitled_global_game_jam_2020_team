@@ -21,6 +21,8 @@ namespace Logic.Quests
             sb.Append(chickenCount);
             sb.Append(" chickens!\n");
             Description = sb.ToString();
+
+            Hints = "- Chickens are weak but fast";
         }
 
 

@@ -8,6 +8,7 @@ namespace Logic
         public string Description;
 
         public string Title;
+        public string Hints;
         public float MaxDuration = 3; // the maximum amount of time the player can take to prepare for the quest
 
         public float Difficulty;

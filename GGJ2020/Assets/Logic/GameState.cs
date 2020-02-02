@@ -9,23 +9,24 @@ public class GameState : MonoBehaviour
 {
     public Party Party;
     public Quest CurrentQuest;
-
     public List<BodyPartVisual> BeltContent;
     public List<BodyPartVisual> PartQueue;
     public List<Body> BodyQueue;
-
     public int Gold;
     public float Difficulty;
-
     private static QuestGenerator _questGenerator = new QuestGenerator();
-
-    public float QuestEndTime;
-
-
+    private float questTimer;
     public QuestResult LastQuestResult;
-
     private int _difficultyDelta = 2;
     private bool paused;
+
+    private enum QuestState
+    {
+        New,
+        Complete
+    }
+
+    private QuestState questState;
 
     public void Start()
     {
@@ -45,22 +46,36 @@ public class GameState : MonoBehaviour
     public void Update()
     {
         if (paused) return;
-        if (!(QuestEndTime < Time.time)) return;
-        FinishQuest();
-        IncreaseDifficulty();
-        StartNewQuest();
+        if (questTimer > 0)
+        {
+            questTimer -= Time.deltaTime;
+        }
+        else
+        {
+            if (questState == QuestState.New)
+            {
+                FinishQuest();
+                IncreaseDifficulty();
+            }
+            else
+            {
+                StartNewQuest();
+            }
+        }
     }
 
     public void FinishQuest()
     {
+        questState = QuestState.Complete;
         LastQuestResult = CurrentQuest?.GetResult(Party);
         QuestEventManager.SendQuestFinished(CurrentQuest, LastQuestResult);
     }
 
     public void StartNewQuest()
     {
+        questState = QuestState.New;
         CurrentQuest = _questGenerator.GenerateQuest(Difficulty);
-        QuestEndTime = Time.time + CurrentQuest.MaxDuration;
+        questTimer = CurrentQuest.MaxDuration;
         QuestEventManager.SendQuestStarted(CurrentQuest);
     }
 
@@ -78,6 +93,7 @@ public class GameState : MonoBehaviour
         Party = new Party();
 
         StartNewQuest();
+        questTimer = CurrentQuest.MaxDuration;
 
         BeltContent = new List<BodyPartVisual>();
         PartQueue = new List<BodyPartVisual>();
