@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class BodyVisual : MonoBehaviour
 {
-    Body Body;
+    Body Body = new Body();
 
     List<SnappingPoint> SnapList = null;
     // Start is called before the first frame update

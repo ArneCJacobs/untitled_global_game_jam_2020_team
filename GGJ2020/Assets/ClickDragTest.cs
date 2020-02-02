@@ -39,7 +39,9 @@ public class ClickDragTest : MonoBehaviour
         if (snappedTo != null)
         {
             var transFormComp = snappedTo.GetComponent<Transform>();
-            this.GetComponent<Transform>().position = transFormComp.position;
+            var bodyPartVisual = GetComponent<BodyPartVisual>();
+            var details = Game.GUI.GuiHelpers.GetPartTypeDetails(bodyPartVisual.AssignedPart.VisualType);
+            this.GetComponent<Transform>().position = (transFormComp.position + new Vector3(0.0f, 0.0f, details.ZOffset));
         }
     }
 
