@@ -92,6 +92,16 @@ public class BeltManager : MonoBehaviour
         }
 
         UpdateMovement();
+
+        var beltScrollers = GetComponentsInChildren<TextureScroll>();
+        foreach (var belt in beltScrollers)
+        {
+            belt.SetScrollSpeed(TimeToPosition * 0.1f);
+            if (paused)
+            {
+                belt.SetScrollSpeed(0.0f);
+            }
+        }
     }
 
     private void UpdateMovement()
