@@ -67,11 +67,17 @@ public class BeltManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (ControlledByPlayer && Input.GetKeyDown("space"))
+        if (ControlledByPlayer)
         {
-            TimeToPosition = 0.3f;
-            paused = false;
-            pauzeAfterRemove = true;
+            if (Input.GetKey("space"))
+            {
+                TimeToPosition = 0.3f;
+                paused = false;
+            }
+            else
+            {
+                paused = true;
+            }
         }
 
         if (paused) return;
@@ -175,6 +181,7 @@ public class BeltManager : MonoBehaviour
                 }
             }
         }
+
         if (ControlledByPlayer)
         {
             gameState.AddBody(attachedObj);

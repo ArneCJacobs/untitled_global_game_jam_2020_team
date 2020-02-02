@@ -685,7 +685,7 @@ PrefabInstance:
     - target: {fileID: 1125438441559865167, guid: 3a4dbdba76e7d5745af0ec8dc6b9cf6e,
         type: 3}
       propertyPath: TimeToPosition
-      value: 4
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1125438441559865167, guid: 3a4dbdba76e7d5745af0ec8dc6b9cf6e,
         type: 3}
