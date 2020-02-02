@@ -39,8 +39,9 @@ public class QuestStartPopup : MonoBehaviour
 
     public void OnContinueButtonClick()
     {
+        SFXEventHandler.SendButtonClick();
         gameState.Play();
-        GetComponent<Canvas>().enabled = false;
+        GetComponent<Canvas>().enabled = false; 
     }
 
     // Update is called once per frame
