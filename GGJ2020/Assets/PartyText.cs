@@ -21,15 +21,15 @@ public class PartyText : MonoBehaviour
 
         foreach (var item in gs.BodyQueue)
         {
-            stringbld.AppendLine("---body---");
+            stringbld.AppendLine($"{item.Part.Name}");
             var stats = item.CalculateStats();
-            stringbld.AppendLine($"Cha {stats.Charisma}");
-            stringbld.AppendLine($"Dex {stats.Dexterity}");
-            stringbld.AppendLine($"Imt {stats.Intelligence}");
-            stringbld.AppendLine($"Str {stats.Strength}");
-            stringbld.AppendLine($"Spd {stats.Speed}");
-            stringbld.AppendLine($"Vit {stats.Vitality}");
-            stringbld.AppendLine($"Dur {stats.Durability}");
+            stringbld.AppendLine($"Cha {item.Part.Stats.Charisma}");
+            stringbld.AppendLine($"Dex {item.Part.Stats.Dexterity}");
+            stringbld.AppendLine($"Imt {item.Part.Stats.Intelligence}");
+            stringbld.AppendLine($"Str {item.Part.Stats.Strength}");
+            stringbld.AppendLine($"Spd {item.Part.Stats.Speed}");
+            stringbld.AppendLine($"Vit {item.Part.Stats.Vitality}");
+            stringbld.AppendLine($"Dur {item.Part.Stats.Durability}");
 
             stringbld.AppendLine($"   ");
 

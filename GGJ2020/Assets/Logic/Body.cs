@@ -7,6 +7,7 @@ namespace Logic
     {
         public List<SnappingPoint> Slots;
         public Stats BaseStats;
+        public Part Part;
 
         public Body()
         {
