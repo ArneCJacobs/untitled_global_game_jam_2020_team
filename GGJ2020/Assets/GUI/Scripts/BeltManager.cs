@@ -138,6 +138,10 @@ public class BeltManager : MonoBehaviour
             {
                 bodVs.AssignPart(PartGenerator.GeneratePart(PartType.TORSO, VisualPartType.HUMAN_TORSO));
             }
+            else if (instObj.transform.name.Contains("BodyZombieFemale"))
+            {
+                bodVs.AssignPart(PartGenerator.GeneratePart(PartType.TORSO, VisualPartType.ZOMBIE_TORSO_FEMALE));
+            }
             else if (instObj.transform.name.Contains("BodyZombie"))
             {
                 bodVs.AssignPart(PartGenerator.GeneratePart(PartType.TORSO, VisualPartType.ZOMBIE_TORSO));

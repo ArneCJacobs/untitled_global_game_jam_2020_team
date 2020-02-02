@@ -5,12 +5,14 @@ namespace Logic
     {
         HUMAN_TORSO,
         ZOMBIE_TORSO,
+        ZOMBIE_TORSO_FEMALE,
 
         ZOMBIE_HEAD,
         ZOMBIE_LEFTARM,
         ZOMBIE_LEFTLEG,
         ZOMBIE_RIGHTARM,
         ZOMBIE_RIGHTLEG,
+        ZOMBIE_HEAD_FEMALE,
 
         HUMAN_HEAD,
         HUMAN_LEFTARM,

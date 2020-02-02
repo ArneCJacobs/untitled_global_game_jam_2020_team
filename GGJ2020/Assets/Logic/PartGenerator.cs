@@ -37,7 +37,7 @@ namespace Logic
             if (!type.HasValue)
             {
                 int maxValue = (int)Enum.GetValues(typeof(VisualPartType)).Cast<VisualPartType>().Max();
-                newPart.VisualType = (VisualPartType)rnd.Next(2, maxValue + 1);
+                newPart.VisualType = (VisualPartType)rnd.Next(3, maxValue + 1);
 
 
             }
@@ -78,7 +78,7 @@ namespace Logic
 
             int maxValue = (int) Enum.GetValues(typeof(VisualPartType)).Cast<VisualPartType>().Max();
 
-            newPart.VisualType = (VisualPartType) rnd.Next(2, maxValue + 1);
+            newPart.VisualType = (VisualPartType) rnd.Next(3, maxValue + 1);
             newPart.Type = GuiHelpers.GetPartTypeDetails(newPart.VisualType).Type;
             newPart.Description = "test description"; //TODO
             newPart.Name = newPart.Type.ToString(); //TODO
