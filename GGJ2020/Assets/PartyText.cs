@@ -9,7 +9,6 @@ public class PartyText : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     // Update is called once per frame
@@ -18,22 +17,19 @@ public class PartyText : MonoBehaviour
         var stringbld = new StringBuilder();
 
         var gs = GameObject.FindGameObjectWithTag("GameState").GetComponent<GameState>();
+        var stats = gs.Party.GetAverageStats();
 
-        foreach (var item in gs.BodyQueue)
-        {
-            stringbld.AppendLine($"{item.Part.Name}");
-            var stats = item.CalculateStats();
-            stringbld.AppendLine($"Cha {item.Part.Stats.Charisma}");
-            stringbld.AppendLine($"Dex {item.Part.Stats.Dexterity}");
-            stringbld.AppendLine($"Imt {item.Part.Stats.Intelligence}");
-            stringbld.AppendLine($"Str {item.Part.Stats.Strength}");
-            stringbld.AppendLine($"Spd {item.Part.Stats.Speed}");
-            stringbld.AppendLine($"Vit {item.Part.Stats.Vitality}");
-            stringbld.AppendLine($"Dur {item.Part.Stats.Durability}");
 
-            stringbld.AppendLine($"   ");
+        stringbld.AppendLine($"Party members: {gs.Party.Bodies.Count}");
+        stringbld.AppendLine($"Cha {(int)stats.Charisma}");
+        stringbld.AppendLine($"Dex {(int)stats.Dexterity}");
+        stringbld.AppendLine($"Imt {(int)stats.Intelligence}");
+        stringbld.AppendLine($"Str {(int)stats.Strength}");
+        stringbld.AppendLine($"Spd {(int)stats.Speed}");
+        stringbld.AppendLine($"Vit {(int)stats.Vitality}");
+        stringbld.AppendLine($"Dur {(int)stats.Durability}");
 
-        }
+        stringbld.AppendLine($"   ");
 
         var tx = gameObject.GetComponent<Text>();
         tx.text = stringbld.ToString();

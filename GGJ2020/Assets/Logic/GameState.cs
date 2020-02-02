@@ -18,6 +18,7 @@ public class GameState : MonoBehaviour
     public QuestResult LastQuestResult;
     private int _difficultyDelta = 2;
     private bool paused;
+    public Party Party;
 
     private enum QuestState
     {
@@ -86,23 +87,24 @@ public class GameState : MonoBehaviour
 
         rslt.Part = vis.AssignedPart;
         BodyQueue.Add(rslt);
+        Party.Bodies.Add(rslt);
     }
 
     public void FinishQuest()
     {
-        var party = new Party();
         foreach (var body in BodyQueue)
         {
-            party.Bodies.Add(body);
+            Party.Bodies.Add(body);
         }
 
         questState = QuestState.Complete;
-        LastQuestResult = CurrentQuest?.GetResult(party);
+        LastQuestResult = CurrentQuest?.GetResult(Party);
         QuestEventManager.SendQuestFinished(CurrentQuest, LastQuestResult);
     }
 
     public void StartNewQuest()
     {
+        Party = new Party();
         questState = QuestState.New;
         CurrentQuest = _questGenerator.GenerateQuest(Difficulty);
         questTimer = CurrentQuest.MaxDuration;
