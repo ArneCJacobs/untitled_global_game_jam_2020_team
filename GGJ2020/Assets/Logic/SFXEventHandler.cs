@@ -37,7 +37,7 @@ namespace Logic
             ButtonHoverEvent?.Invoke();
         }
 
-        public static void ClickButton()
+        public static void SendButtonClick()
         {
             ButtonClickEvent?.Invoke();
         }
