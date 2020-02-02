@@ -238,12 +238,12 @@ PrefabInstance:
     - target: {fileID: 4905086608271219919, guid: 17812af86d348a04ea2d4a81204b4371,
         type: 3}
       propertyPath: m_SortingLayerID
-      value: 680284775
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4905086608271219919, guid: 17812af86d348a04ea2d4a81204b4371,
         type: 3}
       propertyPath: m_SortingLayer
-      value: -3
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 17812af86d348a04ea2d4a81204b4371, type: 3}
@@ -394,6 +394,21 @@ PrefabInstance:
     - target: {fileID: 1136195327860230141, guid: 0624221249f0f11a886436f8a820422d,
         type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1136195327975899114, guid: 0624221249f0f11a886436f8a820422d,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1136195327975899114, guid: 0624221249f0f11a886436f8a820422d,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1136195327975899114, guid: 0624221249f0f11a886436f8a820422d,
+        type: 3}
+      propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1136195328337510444, guid: 0624221249f0f11a886436f8a820422d,
