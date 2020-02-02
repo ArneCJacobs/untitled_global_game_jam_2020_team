@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DigitalRuby.LightningBolt;
 using Logic;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -13,6 +14,17 @@ public class ClickDragTest : MonoBehaviour
     public GameObject snappedTo;
     public GameObject startSnappedTo;
     private SnappingPoint prevsnappingPoint;
+    private GameObject lightning;
+    private LightningBoltScript lScript;
+    private LineRenderer lightningRenderer;
+
+    public void Start()
+    {
+        lightning = transform.Find("/Lightning").gameObject;
+        if (lightning == null) return;
+        lightningRenderer = lightning.GetComponent<LineRenderer>();
+        lScript = lightning.GetComponent<LightningBoltScript>();
+    }
 
     private void OnMouseDown()
     {
@@ -28,10 +40,19 @@ public class ClickDragTest : MonoBehaviour
     {
         Vector2 cursorPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition); //getting cursor position
         transform.position = cursorPosition;
-        
+
         var snaps = GameObject.FindObjectsOfType<SnappingPoint>().ToArray();
         var snapsInChildren = GetComponentsInChildren<SnappingPoint>();
         var rslt = GetDistanceToClosestSnappingPoint(snaps.Where(o => !snapsInChildren.Contains(o)).ToArray());
+        if (rslt.distance < snappingDistance)
+        {
+            if (lightning != null)
+            {
+                lScript.StartObject = transform.gameObject;
+                lScript.EndObject = rslt.target.gameObject;
+                lScript.Trigger();
+            }
+        }
     }
 
     private void Update()
@@ -41,7 +62,8 @@ public class ClickDragTest : MonoBehaviour
             var transFormComp = snappedTo.GetComponent<Transform>();
             var bodyPartVisual = GetComponent<BodyPartVisual>();
             var details = Game.GUI.GuiHelpers.GetPartTypeDetails(bodyPartVisual.AssignedPart.VisualType);
-            this.GetComponent<Transform>().position = (transFormComp.position + new Vector3(0.0f, 0.0f, details.ZOffset));
+            this.GetComponent<Transform>().position =
+                (transFormComp.position + new Vector3(0.0f, 0.0f, details.ZOffset));
         }
     }
 
@@ -49,11 +71,11 @@ public class ClickDragTest : MonoBehaviour
     {
         SnappingPoint[] snaps = GameObject.FindObjectsOfType<SnappingPoint>();
         var rslt = GetDistanceToClosestSnappingPoint(snaps);
-        if (rslt.distance< snappingDistance)
+        if (rslt.distance < snappingDistance)
         {
             Debug.DrawLine(transform.position, rslt.target.transform.position, Color.green, 0, false);
 
-            transform.position= rslt.target.transform.position;
+            transform.position = rslt.target.transform.position;
 
             prevsnappingPoint = null;
             if (snappedTo != null)
@@ -99,7 +121,6 @@ public class ClickDragTest : MonoBehaviour
             float dSqrToTarget = directionToTarget.sqrMagnitude;
             if (dSqrToTarget < closestDistanceSqr && potentialTarget.CanSnap(gameObject))
             {
-                
                 closestDistanceSqr = dSqrToTarget;
                 bestTarget = potentialTarget;
             }
