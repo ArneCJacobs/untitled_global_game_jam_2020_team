@@ -110,27 +110,38 @@ namespace Logic
             Stats stats = part.Stats;
 
             FieldInfo[] properties = typeof(Stats).GetFields();
-            Debug.Log(properties.Length);
 
             foreach (FieldInfo property in properties)
             {
                 float value = (float)property.GetValue(stats);
                 // float value = 0;
-                if (value >= mean && value > max)
+                if (value > max)
                 {
                     max = value;
                     maxStat = property.Name.ToString();
                 }
             }
 
-            if (maxStat == null)
+
+            float ratio = max / mean;
+            string rarity;
+            if (ratio <= 1)
             {
-                return part.Type.ToString(); //TODO
+                rarity = "Common";
+            } else if (ratio < 1.3)
+            {
+                rarity = "Uncommon";
+            } else if (ratio < 1.7)
+            {
+                rarity = "Rare";
             }
             else
             {
-                return part.Type.ToString() + " of " + maxStat;
+                rarity = "Legendary";
             }
+
+
+            return rarity + " " + part.Type + " of " + maxStat;
         }
 
 
