@@ -73,6 +73,8 @@ public class GameState : MonoBehaviour
         {
             rslt.Slots.Add(item);
         }
+
+        BodyQueue.Add(rslt);
     }
 
     public void FinishQuest()

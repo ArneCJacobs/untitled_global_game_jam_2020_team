@@ -40,12 +40,13 @@ public class BeltManager : MonoBehaviour
 
     private GameState gameState;
 
+
     // Start is called before the first frame update
     void Start()
     {
         gameState = transform.Find("/GameState").GetComponent<GameState>();
         m_beltSlotCount = ItemAmount;
-        for (int i = 0; i < ItemAmount; i++)
+        for (var i = 0; i < ItemAmount; i++)
         {
             BeltSlots.Add((GameObject.Instantiate(BeltSnapObject), i));
         }
@@ -137,6 +138,10 @@ public class BeltManager : MonoBehaviour
             {
                 bodVs.AssignPart(PartGenerator.GeneratePart(PartType.TORSO, VisualPartType.HUMAN_TORSO));
             }
+            else if (instObj.transform.name.Contains("BodyZombieFemale"))
+            {
+                bodVs.AssignPart(PartGenerator.GeneratePart(PartType.TORSO, VisualPartType.ZOMBIE_TORSO_FEMALE));
+            }
             else if (instObj.transform.name.Contains("BodyZombie"))
             {
                 bodVs.AssignPart(PartGenerator.GeneratePart(PartType.TORSO, VisualPartType.ZOMBIE_TORSO));
@@ -158,10 +163,6 @@ public class BeltManager : MonoBehaviour
 
         var snapComp = toRemoveItem.obj.GetComponent<SnappingPoint>();
         var attachedObj = snapComp.AssignedPart;
-        if (ControlledByPlayer)
-        {
-            gameState.AddBody(attachedObj);
-        }
 
         if (attachedObj != null)
         {
@@ -173,6 +174,10 @@ public class BeltManager : MonoBehaviour
                     Destroy(childSnappOint.AssignedPart);
                 }
             }
+        }
+        if (ControlledByPlayer)
+        {
+            gameState.AddBody(attachedObj);
         }
 
         BeltSlots.Remove(toRemoveItem);
