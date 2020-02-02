@@ -13,9 +13,7 @@ public class BeltManager : MonoBehaviour
     // public float CurrentMoveTime = 5.0f;
     // public float MaxMoveTime = 5.0f;
     public float TimeToPosition = 1.0f;
-
     public float BeltLength = 50.0f;
-
     // public float Imagesize = 50.0f;
     public float YOffset = 0.0f;
     public int ItemAmount = 5;
@@ -37,16 +35,13 @@ public class BeltManager : MonoBehaviour
 
     public bool ControlledByPlayer = false;
     private bool pauzeAfterRemove = false;
-
-    private GameState gameState;
-
+    
 
     // Start is called before the first frame update
     void Start()
     {
-        gameState = transform.Find("/GameState").GetComponent<GameState>();
         m_beltSlotCount = ItemAmount;
-        for (var i = 0; i < ItemAmount; i++)
+        for (int i = 0; i < ItemAmount; i++)
         {
             BeltSlots.Add((GameObject.Instantiate(BeltSnapObject), i));
         }
@@ -73,7 +68,7 @@ public class BeltManager : MonoBehaviour
             paused = false;
             pauzeAfterRemove = true;
         }
-
+        
         if (paused) return;
         if (m_frameTimer <= 0)
         {
@@ -160,9 +155,17 @@ public class BeltManager : MonoBehaviour
         var snapComp = toRemoveItem.obj.GetComponent<SnappingPoint>();
         var attachedObj = snapComp.AssignedPart;
 
-        if (ControlledByPlayer)
+        if (attachedObj != null)
         {
-            gameState.AddBody(attachedObj);
+            var snapComps = attachedObj.GetComponentsInChildren<SnappingPoint>();
+            foreach (var childSnappOint in snapComps)
+            {
+                if (childSnappOint.AssignedPart != null)
+                {
+                    Destroy(childSnappOint.AssignedPart);
+
+                }
+            }
         }
 
         BeltSlots.Remove(toRemoveItem);
@@ -175,6 +178,7 @@ public class BeltManager : MonoBehaviour
             pauzeAfterRemove = false;
         }
     }
+
 
     private void Pause()
     {
