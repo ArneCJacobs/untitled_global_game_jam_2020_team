@@ -34,6 +34,8 @@ namespace Logic.Quests
                 qr.Loot.Add(PartGenerator.GeneratePart());
             }
 
+            qr.Report = $"You have slain {killedVictims} villagers!";
+
             return qr;
         }
     }

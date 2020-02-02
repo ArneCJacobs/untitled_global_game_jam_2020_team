@@ -17,6 +17,7 @@ public class ClickDragTest : MonoBehaviour
     private GameObject lightning;
     private LightningBoltScript lScript;
     private LineRenderer lightningRenderer;
+    private AudioSource audio;
 
     public void Start()
     {
@@ -24,6 +25,8 @@ public class ClickDragTest : MonoBehaviour
         if (lightning == null) return;
         lightningRenderer = lightning.GetComponent<LineRenderer>();
         lScript = lightning.GetComponent<LightningBoltScript>();
+        audio = transform.gameObject.AddComponent<AudioSource>();
+        audio.clip = Resources.Load<AudioClip>("Sound/Effects/electriccurrent");
     }
 
     private void OnMouseDown()
@@ -46,11 +49,23 @@ public class ClickDragTest : MonoBehaviour
         var rslt = GetDistanceToClosestSnappingPoint(snaps.Where(o => !snapsInChildren.Contains(o)).ToArray());
         if (rslt.distance < snappingDistance)
         {
+            if (!audio.isPlaying)
+            {
+                audio.Play();
+            }
+
             if (lightning != null)
             {
                 lScript.StartObject = transform.gameObject;
                 lScript.EndObject = rslt.target.gameObject;
                 lScript.Trigger();
+            }
+        }
+        else
+        {
+            if (audio.isPlaying)
+            {
+                audio.Stop();
             }
         }
     }

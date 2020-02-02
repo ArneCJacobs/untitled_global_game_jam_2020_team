@@ -33,6 +33,7 @@ namespace Logic.Quests
 
             var qr = new QuestResult {ReturnParty = party};
             DamageRandomParts(qr.ReturnParty, Difficulty / 100);
+            qr.Report = $"Your party managed to kill {Math.Max(0, killedChickens)} chickens!";
             if (killedChickens <= 0) return qr;
             if (killedChickens >= chickenCount)
             {

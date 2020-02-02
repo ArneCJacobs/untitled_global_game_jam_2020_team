@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class QuestCompletePopup : MonoBehaviour
 {
     private GameObject questTitle;
-    private GameObject questDescription;
+    private GameObject questReport;
     private GameObject questResults;
     private GameState gameState;
 
@@ -17,7 +17,7 @@ public class QuestCompletePopup : MonoBehaviour
     {
         GetComponent<Canvas>().enabled = false;
         questTitle = transform.Find("QuestTitle").gameObject;
-        questDescription = transform.Find("QuestDescription").gameObject;
+        questReport = transform.Find("QuestReport").gameObject;
         questResults = transform.Find("QuestResults").gameObject;
         gameState = GameObject.Find("/GameState").gameObject.GetComponent<GameState>();
         QuestEventManager.QuestFinishedEvent += DisplayQuest;
@@ -34,7 +34,7 @@ public class QuestCompletePopup : MonoBehaviour
         gameState.Pause();
         GetComponent<Canvas>().enabled = true;
         questTitle.GetComponent<Text>().text = quest.Title;
-        questDescription.GetComponent<Text>().text = quest.Description;
+        questReport.GetComponent<Text>().text = result.Report;
         questResults.GetComponent<QuestResultBox>().Display(result);
     }
 

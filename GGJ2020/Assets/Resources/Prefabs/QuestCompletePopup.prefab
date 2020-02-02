@@ -1042,7 +1042,7 @@ GameObject:
   - component: {fileID: 5046992053746057164}
   - component: {fileID: 5046992053746057165}
   m_Layer: 0
-  m_Name: QuestDescription
+  m_Name: QuestReport
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1106,7 +1106,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: A long quest description
+  m_Text: Your party was too slow! ATTACH MORE LEGS!
 --- !u!1 &5046992053907122671
 GameObject:
   m_ObjectHideFlags: 0
