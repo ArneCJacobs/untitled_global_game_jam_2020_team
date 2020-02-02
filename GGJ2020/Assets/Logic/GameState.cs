@@ -35,11 +35,13 @@ public class GameState : MonoBehaviour
 
     public void Pause()
     {
+        StateEventManager.SendStatePause();
         paused = true;
     }
 
     public void Play()
     {
+        StateEventManager.SendStatePlay();
         paused = false;
     }
 

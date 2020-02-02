@@ -1,4 +1,5 @@
-﻿using Logic;
+﻿using System;
+using Logic;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -19,7 +20,7 @@ public class BeltManager : MonoBehaviour
     public float LerpValue;
 
     float m_frameTimer = 0.0f;
-    public bool BodiesOnly= true;
+    public bool BodiesOnly = true;
 
     public GameObject BeltSnapObject;
     public GameObject BeltSnapObjectAddition;
@@ -29,6 +30,7 @@ public class BeltManager : MonoBehaviour
     List<Part> QueuedPartList = new List<Part>();
 
     List<Part> PartList = new List<Part>();
+    private bool paused;
 
     // Start is called before the first frame update
     void Start()
@@ -40,9 +42,22 @@ public class BeltManager : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        StateEventManager.StatePauseEvent += Pause;
+        StateEventManager.StatePlayEvent += Play;
+    }
+
+    private void OnDisable()
+    {
+        StateEventManager.StatePauseEvent -= Pause;
+        StateEventManager.StatePlayEvent -= Play;
+    }
+
     // Update is called once per frame
     void Update()
     {
+        if (paused) return;
         if (m_frameTimer <= 0)
         {
             i_advanceBelt();
@@ -52,6 +67,7 @@ public class BeltManager : MonoBehaviour
         {
             m_frameTimer -= Time.deltaTime;
         }
+
         UpdateMovement();
     }
 
@@ -64,8 +80,9 @@ public class BeltManager : MonoBehaviour
             var item = BeltSlots[i];
             var sectionLength = BeltLength / ItemAmount;
 
-            LerpValue = Mathf.Lerp((item.index * sectionLength) - (BeltLength / 2), (item.index + 1) * sectionLength - (BeltLength / 2), BeltTimer);
-            var snappingPart = item.obj.GetComponent<SnappingPoint>();       
+            LerpValue = Mathf.Lerp((item.index * sectionLength) - (BeltLength / 2),
+                (item.index + 1) * sectionLength - (BeltLength / 2), BeltTimer);
+            var snappingPart = item.obj.GetComponent<SnappingPoint>();
 
             item.obj.transform.position = new Vector3(LerpValue, YOffset);
             var ob = BeltSlots.Select(o => o.obj).FirstOrDefault();
@@ -113,5 +130,15 @@ public class BeltManager : MonoBehaviour
         BeltSlots.Remove(toRemoveItem);
         Destroy(attachedObj);
         Destroy(toRemoveItem.obj);
+    }
+
+    private void Pause()
+    {
+        paused = true;
+    }
+
+    private void Play()
+    {
+        paused = false;
     }
 }
