@@ -12,13 +12,6 @@ namespace Logic
         {
             BaseStats = new Stats();
             Slots = new List<SnappingPoint>();
-            for (int i = 0; i < 5; i++)
-            {
-                var obj = new GameObject();
-                var snappingPoint = obj.AddComponent<SnappingPoint>();
-                
-                Slots.Add(snappingPoint);
-            }
         }
 
         public Stats CalculateStats()
