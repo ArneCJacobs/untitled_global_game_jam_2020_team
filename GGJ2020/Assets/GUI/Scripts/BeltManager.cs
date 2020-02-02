@@ -1,19 +1,20 @@
 ﻿using System;
 using Logic;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using UnityEngine;
 
 public class BeltManager : MonoBehaviour
 {
-    public bool IsScrolling = false;
-    public float ScrollSpeed = 0.0f;
-    public float MaxScrollSpeed = 1.0f;
-    public float CurrentMoveTime = 5.0f;
-    public float MaxMoveTime = 5.0f;
+    // public bool IsScrolling = false;
+    // public float ScrollSpeed = 0.0f;
+    // public float MaxScrollSpeed = 1.0f;
+    // public float CurrentMoveTime = 5.0f;
+    // public float MaxMoveTime = 5.0f;
     public float TimeToPosition = 1.0f;
     public float BeltLength = 50.0f;
-    public float Imagesize = 50.0f;
+    // public float Imagesize = 50.0f;
     public float YOffset = 0.0f;
     public int ItemAmount = 5;
     public float BeltTimer;
@@ -30,7 +31,11 @@ public class BeltManager : MonoBehaviour
     List<Part> QueuedPartList = new List<Part>();
 
     List<Part> PartList = new List<Part>();
-    private bool paused;
+    public bool paused = true;
+
+    public bool ControlledByPlayer = false;
+    private bool pauzeAfterRemove = false;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -57,6 +62,13 @@ public class BeltManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (ControlledByPlayer && Input.GetKeyDown("space"))
+        {
+            TimeToPosition = 0.3f;
+            paused = false;
+            pauzeAfterRemove = true;
+        }
+        
         if (paused) return;
         if (m_frameTimer <= 0)
         {
@@ -130,6 +142,12 @@ public class BeltManager : MonoBehaviour
         BeltSlots.Remove(toRemoveItem);
         Destroy(attachedObj);
         Destroy(toRemoveItem.obj);
+
+        if (pauzeAfterRemove)
+        {
+            paused = true;
+            pauzeAfterRemove = false;
+        }
     }
 
     private void Pause()
