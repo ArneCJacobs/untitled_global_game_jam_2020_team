@@ -5,13 +5,13 @@ namespace Logic
 {
     public class Body
     {
-        public List<SnappingPoint> Slots;
+        public List<Part> Slots;
         public Stats BaseStats;
 
         public Body()
         {
             BaseStats = new Stats();
-            Slots = new List<SnappingPoint>();
+            Slots = new List<Part>();
         }
 
         public Stats CalculateStats()
@@ -19,12 +19,7 @@ namespace Logic
             var counter = new Stats();
             foreach (var slot in Slots)
             {
-                if (slot.AssignedPart != null)
-                {
-                    var comp = slot.AssignedPart.GetComponent<BodyPartVisual>();
-
-                    counter += comp.AssignedPart.Stats;
-                }
+                counter += slot.Stats;
             }
 
             return counter;
