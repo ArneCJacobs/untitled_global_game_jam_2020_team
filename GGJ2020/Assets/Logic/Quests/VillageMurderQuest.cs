@@ -29,6 +29,11 @@ namespace Logic.Quests
             // if (killedVictims <= 0) return qr;
 
             qr.Gold = killedVictims * party.GetAverageStats().Intelligence / 100;
+            if (double.IsNaN(qr.Gold))
+            {
+                qr.Gold = 0;
+            }
+
             for (var i = 0; i < 10 / 2; i++)
             {
                 qr.Loot.Add(PartGenerator.GeneratePart());

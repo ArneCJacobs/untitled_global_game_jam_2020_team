@@ -174,7 +174,7 @@ GameObject:
   - component: {fileID: 1136195328093140408}
   - component: {fileID: 1136195328093140411}
   m_Layer: 5
-  m_Name: Scroll View
+  m_Name: QuestHints
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

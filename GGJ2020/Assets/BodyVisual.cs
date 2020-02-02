@@ -5,12 +5,13 @@ using UnityEngine;
 
 public class BodyVisual : MonoBehaviour
 {
-    Body Body = new Body();
+    private Body Body; 
 
     List<SnappingPoint> SnapList = null;
     // Start is called before the first frame update
     void Start()
     {
+        Body = new Body();
         foreach (var item in GetComponentsInChildren<SnappingPoint>())
             Body.Slots.Add(item);
     }

@@ -18,6 +18,7 @@ public class QuestStartPopup : MonoBehaviour
         GetComponent<Canvas>().enabled = false;
         questTitle = transform.Find("QuestTitle").gameObject;
         questDescription = transform.Find("QuestDescription").gameObject;
+        questHints = transform.Find("QuestHints/Viewport/Content").gameObject;
         gameState = GameObject.Find("/GameState").gameObject.GetComponent<GameState>();
         QuestEventManager.QuestStartedEvent += DisplayQuest;
     }
