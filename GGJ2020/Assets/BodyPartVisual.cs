@@ -38,7 +38,7 @@ public class BodyPartVisual : MonoBehaviour
         if (AssignedPart == null)
             return;
 
-        var partDetails = GuiHelpers.GetPartTypeDetails(AssignedPart.Type);
+        var partDetails = GuiHelpers.GetPartTypeDetails(AssignedPart.VisualType);
         var sprite = Resources.Load<Sprite>(AttachedToBody ? partDetails.AssetName : partDetails.BeltAssetName);
         spriteRenderer.sprite = sprite;
         //var size = spriteRenderer.sprite.bounds.size;
