@@ -7,6 +7,7 @@ using UnityEngine;
 public class BodyPartVisual : MonoBehaviour
 {
     public Part AssignedPart = null;
+    public bool HasCollider = true;
     public PartType PartTypeOverride = PartType.HEAD;
     public bool AttachedToBody = true;
     // Start is called before the first frame update
@@ -53,8 +54,12 @@ public class BodyPartVisual : MonoBehaviour
         else
             spriteRenderer.transform.localScale = new Vector3(!AttachedToBody ? partDetails.SizeModifier : 0.3f, !AttachedToBody ? partDetails.SizeModifier : 0.3f, 1.0f);
 
-        Destroy(GetComponent<PolygonCollider2D>());
-        gameObject.AddComponent<PolygonCollider2D>();
+        if (HasCollider)
+        {
+            Destroy(GetComponent<PolygonCollider2D>());
+            gameObject.AddComponent<PolygonCollider2D>();
+        }
+
         
     }
 
