@@ -72,7 +72,16 @@ public class GameState : MonoBehaviour
         var vis = bodyObject.GetComponent<BodyPartVisual>();
         foreach (var item in bodyObject.GetComponentsInChildren<SnappingPoint>())
         {
-            rslt.Slots.Add(item);
+            if (item.AssignedPart == null)
+            {
+                continue;
+            }
+            var bpv =item.AssignedPart.GetComponent<BodyPartVisual>();
+            if (bpv == null)
+            {
+                continue;
+            }
+            rslt.Slots.Add(item.AssignedPart.GetComponent<BodyPartVisual>().AssignedPart);
         }
 
         rslt.Part = vis.AssignedPart;

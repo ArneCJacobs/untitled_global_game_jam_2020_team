@@ -9,7 +9,7 @@ namespace Logic
 
         public string Title;
         public string Hints;
-        public float MaxDuration = 10; // the maximum amount of time the player can take to prepare for the quest
+        public float MaxDuration = 20; // the maximum amount of time the player can take to prepare for the quest
 
         public float Difficulty;
 
@@ -26,13 +26,13 @@ namespace Logic
             var random = new Random();
             foreach (var body in party.Bodies)
             {
-                foreach (var part in from slot in body.Slots
-                    where slot.AssignedPart != null
-                    where random.NextDouble() > 0.5
-                    select slot.AssignedPart)
-                {
-                    // part.Stats.Durability -= (float) random.NextDouble() * avrDamage;
-                }
+                // foreach (var part in from slot in body.Slots
+                //     where slot.AssignedPart != null
+                //     where random.NextDouble() > 0.5
+                //     select slot.AssignedPart)
+                // {
+                //     // part.Stats.Durability -= (float) random.NextDouble() * avrDamage;
+                // }
             }
         }
     }

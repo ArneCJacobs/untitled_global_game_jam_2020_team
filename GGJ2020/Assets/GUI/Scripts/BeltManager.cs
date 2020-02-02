@@ -180,6 +180,10 @@ public class BeltManager : MonoBehaviour
         var snapComp = toRemoveItem.obj.GetComponent<SnappingPoint>();
         var attachedObj = snapComp.AssignedPart;
 
+        if (ControlledByPlayer)
+        {
+            gameState.AddBody(attachedObj);
+        }
         if (attachedObj != null)
         {
             var snapComps = attachedObj.GetComponentsInChildren<SnappingPoint>();
@@ -192,10 +196,6 @@ public class BeltManager : MonoBehaviour
             }
         }
 
-        if (ControlledByPlayer)
-        {
-            gameState.AddBody(attachedObj);
-        }
 
         BeltSlots.Remove(toRemoveItem);
         Destroy(attachedObj);
