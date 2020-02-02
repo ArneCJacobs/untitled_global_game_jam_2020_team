@@ -19,6 +19,17 @@ namespace Logic
             {Rarity.RARE, 1.5f},
             {Rarity.LEGENDARY, 2.3f}
         };
+        
+        
+        private static Dictionary<PartType,(float speed, float vitality, float intelligence, float strength, float dexterity, float charisma, float durability)> statModifiersPerType = new Dictionary<PartType, (float, float, float, float, float, float, float)>()
+        {
+            {PartType.HEAD, (0, 0.2f, 1.0f, 0, 0, 1, 1)},
+            {PartType.TORSO, (0.5f, 1.2f, 0, 0.5f, 0.2f, 0, 1)},
+            {PartType.LEFTARM, (0.7f, 0.3f, 0, 1, 1, 0, 1)},
+            {PartType.RIGHTARM, (0.7f, 0.3f, 0, 1, 1, 0, 1)},
+            {PartType.LEFTLEG, (1, 0.3f, 0, 0.6f, 0.3f, 0, 1)},
+            {PartType.LEFTLEG, (1, 0.3f, 0, 0.6f, 0.3f, 0, 1)},
+        };
 
         private static float NextFloat()
         {
@@ -43,24 +54,28 @@ namespace Logic
                 newPart.VisualType = GuiHelpers.GetRandomPartyForCategory(type.Value);
 
 
+            PartFactoryType factoryType = GuiHelpers.GetPartTypeDetails(newPart.VisualType);
+            newPart.Type = factoryType.Type;
             newPart.Description = "test description"; //TODO
             newPart.Name = newPart.VisualType.ToString(); //TODO
-            GenerateStats();
+            GenerateStats(newPart.Type);
 
             return newPart;
         }
 
-        private static Stats GenerateStats()
+        private static Stats GenerateStats(PartType type)
         {
+            (float speed, float vitality, float intelligence, float strength, float dexterity, float charisma,
+                float durability) = statModifiersPerType[type];
             return new Stats()
             {
-                Speed = NextFloat(),
-                Vitality = NextFloat(),
-                Intelligence = NextFloat(),
-                Strength = NextFloat(),
-                Dexterity = NextFloat(),
-                Charisma = NextFloat(),
-                Durability = NextFloat(),
+                Speed = NextFloat() * speed,
+                Vitality = NextFloat() *  vitality,
+                Intelligence = NextFloat() * intelligence,
+                Strength = NextFloat() * strength,
+                Dexterity = NextFloat() * dexterity,
+                Charisma = NextFloat() * charisma,
+                Durability = NextFloat() * durability,
             };
         }
 
@@ -74,7 +89,7 @@ namespace Logic
             newPart.Type = GuiHelpers.GetPartTypeDetails(newPart.VisualType).Type;
             newPart.Description = "test description"; //TODO
             newPart.Name = newPart.Type.ToString(); //TODO
-            newPart.Stats = GenerateStats();
+            newPart.Stats = GenerateStats(newPart.Type);
             return newPart;
         }
 
@@ -83,7 +98,7 @@ namespace Logic
             var typedets = GuiHelpers.GetPartTypeDetails(type);
             Part part = new Part();
             part.Type = typedets.Type;
-            part.Stats = GenerateStats();
+            part.Stats = GenerateStats(part.Type);
             part.Stats *= rarityModifiers[rarity];
             part.Name = rarity.ToString() + " " + type.ToString();
             return part;
