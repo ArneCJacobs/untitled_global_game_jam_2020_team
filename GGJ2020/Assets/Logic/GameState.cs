@@ -7,6 +7,7 @@ using UnityEngine;
 
 public class GameState : MonoBehaviour
 {
+    public Party Party;
     public Quest CurrentQuest;
     public List<BodyPartVisual> BeltContent;
     public List<BodyPartVisual> PartQueue;
@@ -65,28 +66,10 @@ public class GameState : MonoBehaviour
         }
     }
 
-    public void AddBody(GameObject bodyObject)
-    {
-        if (bodyObject == null) return;
-        var rslt = new Body();
-        foreach (var item in bodyObject.GetComponentsInChildren<SnappingPoint>())
-        {
-            rslt.Slots.Add(item);
-        }
-
-        BodyQueue.Add(rslt);
-    }
-
     public void FinishQuest()
     {
-        var party = new Party();
-        foreach (var body in BodyQueue)
-        {
-            party.Bodies.Add(body);
-        }
-
         questState = QuestState.Complete;
-        LastQuestResult = CurrentQuest?.GetResult(party);
+        LastQuestResult = CurrentQuest?.GetResult(Party);
         QuestEventManager.SendQuestFinished(CurrentQuest, LastQuestResult);
     }
 
@@ -109,6 +92,7 @@ public class GameState : MonoBehaviour
         Difficulty = 0;
         Gold = 0;
 
+        Party = new Party();
 
         StartNewQuest();
         questTimer = CurrentQuest.MaxDuration;
