@@ -155,6 +155,19 @@ public class BeltManager : MonoBehaviour
         var snapComp = toRemoveItem.obj.GetComponent<SnappingPoint>();
         var attachedObj = snapComp.AssignedPart;
 
+        if (attachedObj != null)
+        {
+            var snapComps = attachedObj.GetComponentsInChildren<SnappingPoint>();
+            foreach (var childSnappOint in snapComps)
+            {
+                if (childSnappOint.AssignedPart != null)
+                {
+                    Destroy(childSnappOint.AssignedPart);
+
+                }
+            }
+        }
+
         BeltSlots.Remove(toRemoveItem);
         Destroy(attachedObj);
         Destroy(toRemoveItem.obj);
@@ -165,6 +178,7 @@ public class BeltManager : MonoBehaviour
             pauzeAfterRemove = false;
         }
     }
+
 
     private void Pause()
     {
