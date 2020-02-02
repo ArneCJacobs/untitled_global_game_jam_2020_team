@@ -29,6 +29,7 @@ public class ClickDragTest : MonoBehaviour
 
     private void OnMouseDown()
     {
+        SFXEventHandler.SendClickPart();
         startPos = transform.position;
         if (snappedTo == null) return;
         startSnappedTo = snappedTo;
@@ -100,6 +101,7 @@ public class ClickDragTest : MonoBehaviour
 
             if (snappingPoint != null)
             {
+                SFXEventHandler.SendAttachPart(snappingPoint.gameObject);
                 if (prevsnappingPoint != null)
                     prevsnappingPoint.UnSnap();
                 snappingPoint.UnSnap();
@@ -118,6 +120,7 @@ public class ClickDragTest : MonoBehaviour
         {
             transform.position = startPos;
             snappedTo = startSnappedTo;
+            SFXEventHandler.SendAttachPart(null);
         }
     }
 
