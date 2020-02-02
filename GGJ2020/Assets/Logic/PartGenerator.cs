@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using UnityEngine;
 using Random = System.Random;
 
@@ -128,10 +129,10 @@ namespace Logic
             if (ratio <= 1)
             {
                 rarity = "Common";
-            } else if (ratio < 1.3)
+            } else if (ratio < 2)
             {
                 rarity = "Uncommon";
-            } else if (ratio < 1.7)
+            } else if (ratio < 3)
             {
                 rarity = "Rare";
             }
