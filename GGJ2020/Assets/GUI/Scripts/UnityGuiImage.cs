@@ -18,7 +18,7 @@ namespace Game.GUI
         // Start is called before the first frame update
         void Start()
         {
-            runInEditMode = true;
+            //runInEditMode = true;
             Image = gameObject.GetComponent<Image>();
         }
 
