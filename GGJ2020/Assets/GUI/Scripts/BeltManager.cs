@@ -172,7 +172,6 @@ public class BeltManager : MonoBehaviour
                 if (childSnappOint.AssignedPart != null)
                 {
                     Destroy(childSnappOint.AssignedPart);
-
                 }
             }
         }
