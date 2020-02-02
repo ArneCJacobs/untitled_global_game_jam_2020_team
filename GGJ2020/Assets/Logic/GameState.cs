@@ -14,7 +14,7 @@ public class GameState : MonoBehaviour
     public int Gold;
     public float Difficulty;
     private static QuestGenerator _questGenerator = new QuestGenerator();
-    private float questTimer;
+    public float QuestTimer;
     public QuestResult LastQuestResult;
     private int _difficultyDelta = 2;
     private bool paused;
@@ -48,9 +48,9 @@ public class GameState : MonoBehaviour
     public void Update()
     {
         if (paused) return;
-        if (questTimer > 0)
+        if (QuestTimer > 0)
         {
-            questTimer -= Time.deltaTime;
+            QuestTimer -= Time.deltaTime;
         }
         else
         {
@@ -99,6 +99,7 @@ public class GameState : MonoBehaviour
 
         questState = QuestState.Complete;
         LastQuestResult = CurrentQuest?.GetResult(Party);
+        Gold += (int)LastQuestResult.Gold;
         QuestEventManager.SendQuestFinished(CurrentQuest, LastQuestResult);
     }
 
@@ -107,7 +108,7 @@ public class GameState : MonoBehaviour
         Party = new Party();
         questState = QuestState.New;
         CurrentQuest = _questGenerator.GenerateQuest(Difficulty);
-        questTimer = CurrentQuest.MaxDuration;
+        QuestTimer = CurrentQuest.MaxDuration;
         QuestEventManager.SendQuestStarted(CurrentQuest);
     }
 
@@ -124,7 +125,7 @@ public class GameState : MonoBehaviour
 
 
         StartNewQuest();
-        questTimer = CurrentQuest.MaxDuration;
+        QuestTimer = CurrentQuest.MaxDuration;
 
         BeltContent = new List<BodyPartVisual>();
         PartQueue = new List<BodyPartVisual>();
