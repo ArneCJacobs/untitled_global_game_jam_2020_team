@@ -668,6 +668,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1125438441559865167, guid: 3a4dbdba76e7d5745af0ec8dc6b9cf6e,
         type: 3}
+      propertyPath: BeltSnapObjectAdditions.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1125438441559865167, guid: 3a4dbdba76e7d5745af0ec8dc6b9cf6e,
+        type: 3}
       propertyPath: BeltSnapObjectAddition
       value: 
       objectReference: {fileID: 8177265473426133243, guid: a33c87c57ea0324499fec5d5f45fcbab,
@@ -676,6 +681,22 @@ PrefabInstance:
         type: 3}
       propertyPath: YOffset
       value: -3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1125438441559865167, guid: 3a4dbdba76e7d5745af0ec8dc6b9cf6e,
+        type: 3}
+      propertyPath: TimeToPosition
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1125438441559865167, guid: 3a4dbdba76e7d5745af0ec8dc6b9cf6e,
+        type: 3}
+      propertyPath: BeltSnapObjectAdditions.Array.data[0]
+      value: 
+      objectReference: {fileID: 8177265473426133243, guid: a33c87c57ea0324499fec5d5f45fcbab,
+        type: 3}
+    - target: {fileID: 1125438441559865167, guid: 3a4dbdba76e7d5745af0ec8dc6b9cf6e,
+        type: 3}
+      propertyPath: BeltLength
+      value: 25
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3a4dbdba76e7d5745af0ec8dc6b9cf6e, type: 3}
@@ -777,6 +798,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6756819742785269541, guid: bb7086148d722994ba83678a78ccfbd6,
         type: 3}
+      propertyPath: BeltSnapObjectAdditions.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6756819742785269541, guid: bb7086148d722994ba83678a78ccfbd6,
+        type: 3}
       propertyPath: BeltSnapObject
       value: 
       objectReference: {fileID: 8988420037047728125, guid: 641ff651f0e229048971fac8f1dd974c,
@@ -787,6 +813,28 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4905086608271219905, guid: 17812af86d348a04ea2d4a81204b4371,
         type: 3}
+    - target: {fileID: 6756819742785269541, guid: bb7086148d722994ba83678a78ccfbd6,
+        type: 3}
+      propertyPath: TimeToPosition
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6756819742785269541, guid: bb7086148d722994ba83678a78ccfbd6,
+        type: 3}
+      propertyPath: BeltSnapObjectAdditions.Array.data[0]
+      value: 
+      objectReference: {fileID: 4905086608271219905, guid: 17812af86d348a04ea2d4a81204b4371,
+        type: 3}
+    - target: {fileID: 6756819742785269541, guid: bb7086148d722994ba83678a78ccfbd6,
+        type: 3}
+      propertyPath: BeltSnapObjectAdditions.Array.data[1]
+      value: 
+      objectReference: {fileID: 4905086608271219905, guid: 6a852aac34ea67e4aa0bae3fbd7d2c4d,
+        type: 3}
+    - target: {fileID: 6756819742785269541, guid: bb7086148d722994ba83678a78ccfbd6,
+        type: 3}
+      propertyPath: YOffset
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6756819742785269542, guid: bb7086148d722994ba83678a78ccfbd6,
         type: 3}
       propertyPath: m_LocalPosition.x
